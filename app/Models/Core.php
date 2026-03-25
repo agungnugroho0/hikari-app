@@ -32,7 +32,7 @@ class Core extends Model
 
     public function kelas()
     {
-        return $this->hasOne(Kelas::class,'id_kelas','id_kelas');
+        return $this->belongsTo(Kelas::class,'id_kelas','id_kelas');
     }
 
     public function listlolos()
@@ -47,6 +47,10 @@ class Core extends Model
     public function listtx_siswa()
     {
         return $this->hasMany(Transaksi::class,'nis','nis');
+    }
+    public function absensi()
+    {
+        return $this->hasMany(Absen::class,'nis','nis');
     }
 
 }
