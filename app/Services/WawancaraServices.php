@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Absen;
 use App\Models\Core;
 use App\Models\ListLolos;
 use App\Models\So;
@@ -40,21 +41,12 @@ class WawancaraServices
             $core = Core::where('nis', $data['nis'])->lockForUpdate()->firstOrFail();
             $so = So::with('list_job')->where('id_so', '=', $data['id_so'])
                 ->whereHas('list_job', function (Builder $q) use ($data) {
-                    $q->where('id_job', '=', $data['id_job']);
-                })
-                ->lockforupdate()->firstorFail();
-            // $so = So::with([
-            //     'list_job' => function ($q) use ($data) {
-            //         $q->where('id_job', $data['id_job']);
-            //     },
-            // ])
-            //     ->where('id_so', $data['id_so'])
-            //     ->lockForUpdate()
-            // ->first();
+                    $q->where('id_job', '=', $data['id_job']);})->lockforupdate()->firstorFail();
 
             $id_lolos = $this->generateId('L', ListLolos::class, 'id_lolos');
             $id_t = $this->generateId('T', Tagihan::class, 'id_t');
             $id_t2 = $this->nextId($id_t);
+
 
             // input loglolos
             ListLolos::create(
@@ -98,11 +90,11 @@ class WawancaraServices
                 ['status' => 'lolos']
             );
 
+            // hapus absen
+            Absen::where('nis', $data['nis'])->delete();
             // hapus list_w
             $job = $so->list_job->first();
-            $list = $job->list_ww()
-                ->where('nis', $data['nis'])
-                ->first();
+            $list = $job->list_ww()->where('nis', $data['nis'])->first();
             $list?->delete();
         });
     }

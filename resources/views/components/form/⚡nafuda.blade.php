@@ -46,5 +46,6 @@ new class extends Component
                 <div wire:loading wire:target="nafuda.ket">Uploading...</div>
             </div>
         </form>    
+    <x-loading wire:loading wire:target="update"></x-loading>
     
 </div>

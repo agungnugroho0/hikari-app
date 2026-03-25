@@ -47,5 +47,6 @@ new class extends Component
             </div>
         </form>    
        
+<x-loading wire:loading wire:target="update"></x-loading>
     
 </div>
