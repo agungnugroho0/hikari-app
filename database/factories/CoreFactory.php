@@ -21,9 +21,9 @@ class CoreFactory extends Factory
     {
         return [
         'nis'      => now()->format('Ymd') . fake()->unique()->numberBetween(000, 999),
-        // 'id_kelas' => Kelas::factory(), // Tetap sediakan default-nya
+        'id_kelas' => '1', //Kelas::factory(), // Tetap sediakan default-nya
         'status'   => fake()->randomElement(['siswa','lolos','cuti']),
-        'foto'     => 'default.jpg',
+        'foto'     => null,
         ];
     }
 

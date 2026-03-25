@@ -73,7 +73,7 @@ class WawancaraServices
                 [
                     'id_t' => $id_t,
                     'nis' => $data['nis'],
-                    'id_so' => $data['id_so'],
+                    'id_so' => null,
                     'tgl_terbit' => now()->toDateString(),
                     'nama_tagihan' => 'Tagihan Hikari',
                     'kekurangan_tagihan' => $data['tagihan'],

@@ -31,13 +31,19 @@ new class extends Component
         $this->wawancara->id_so = $this->jobfair->id_so;
         $this->wawancara->nis = $this->nis;
         $this->wawancara->store();
+        $this->dispatch('jobfair-updated');
         $this->dispatch('tutupforms', message: 'Peserta dinyatakan lolos', celebrate: true);
     }
     
 };
 ?>
 
-<div class="mt-2">
+<div x-data="{
+    formatRibuan(value) {
+        const angka = String(value ?? '').replace(/\D/g, '');
+        return angka.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+}" class="mt-2">
     <form wire:submit.prevent="submit" class="grid grid-cols-2 gap-3">
         <input type="text" name="id_so" id="id_so" wire:model="jobfair.id_so" hidden>
         <div class="flex flex-col">
@@ -70,7 +76,15 @@ new class extends Component
         </div>
         <div class="flex flex-col">
             <label for="tagihan_hikari" class="text-xs text-gray-600 py-1 mt-2">Tagihan Hikari</label>
-            <input type="text" name="tagihan_hikari" id="tagihan_hikari" wire:model="wawancara.tagihan"
+            <input type="text" name="tagihan_hikari" id="tagihan_hikari" inputmode="numeric"
+                x-data="{ display: formatRibuan($wire.wawancara.tagihan) }"
+                x-init="$watch(() => $wire.wawancara.tagihan, value => display = formatRibuan(value))"
+                x-model="display"
+                x-on:input="
+                    const raw = $event.target.value.replace(/\D/g, '');
+                    display = formatRibuan(raw);
+                    $wire.set('wawancara.tagihan', raw);
+                "
                 class="border-red-200 focus:ring-0 rounded" >
                 @error('wawancara.tagihan')
                 <span class="error text-orange-600">{{ $message }}</span>
@@ -78,7 +92,15 @@ new class extends Component
         </div>
         <div class="flex flex-col">
             <label for="tagihan_so" class="text-xs text-gray-600 py-1 mt-2">Tagihan SO {{ $nama_so }}</label>
-            <input type="text" name="tagihan_so" id="tagihan_so" wire:model="wawancara.tagihan_so"
+            <input type="text" name="tagihan_so" id="tagihan_so" inputmode="numeric"
+                x-data="{ display: formatRibuan($wire.wawancara.tagihan_so) }"
+                x-init="$watch(() => $wire.wawancara.tagihan_so, value => display = formatRibuan(value))"
+                x-model="display"
+                x-on:input="
+                    const raw = $event.target.value.replace(/\D/g, '');
+                    display = formatRibuan(raw);
+                    $wire.set('wawancara.tagihan_so', raw);
+                "
                 class="border-red-200 focus:ring-0 rounded" >
                 @error('wawancara.tagihan_so')
                 <span class="error text-orange-600">{{ $message }}</span>
@@ -86,12 +108,12 @@ new class extends Component
         </div>
         <div class="flex flex-col">
             <label for="tagihan_so" class="text-xs text-gray-600 py-1 mt-2">&nbsp;</label>
-         <button wire:submit wire:loading.attr="disabled"
+         <button wire:submit wire:loading.attr="disabled" wire:target="submit"
             class="bg-red-900 p-3 font-bold text-white hover:bg-red-700 transition cursor-pointer rounded">Lolos</button>
         </div>
     </form>
     {{-- loading time --}}
-    <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50" wire:loading>
+    <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50" wire:loading wire:target="submit">
         <div role="status">
             <svg aria-hidden="true"
                 class="w-8 h-8 text-neutral-tertiary animate-spin fill-red-900 mx-auto translate-y-5"

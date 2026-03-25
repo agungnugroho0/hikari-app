@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedInteger('id_kelas',true);
             $table->string('nama_kelas');
             $table->integer('tingkat');            
-            $table->string('id_pengajar');
+            $table->unsignedBigInteger('id_pengajar');
             $table->foreign('id_pengajar')->references('id_staff')->on('staff');
         });
     }

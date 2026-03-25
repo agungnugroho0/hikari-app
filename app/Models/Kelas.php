@@ -20,4 +20,9 @@ class Kelas extends Model
     {
         return $this->belongsTo(Core::class);
     }
+
+    public function pengajar()
+{
+    return $this->belongsTo(Staff::class, 'id_pengajar', 'id_staff');
+}
 }

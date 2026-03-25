@@ -10,7 +10,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('layouts.admin')] 
-#[Title('Wawancara')]
+#[Title('Job Order')]
 class Jobfair extends Component
 {
 
@@ -22,6 +22,13 @@ class Jobfair extends Component
     public $showConfirm = false;
     public $tambahpesertaform = false;
     public $lolosform = false;
+
+    protected function loadSoData(): void
+    {
+        $this->so = So::whereHas('list_job')
+            ->with(['list_job.list_ww.corelist.detail'])
+            ->get();
+    }
 
 
     public function bukaforms()
@@ -52,6 +59,12 @@ class Jobfair extends Component
 
     }
 
+    #[On('jobfair-updated')]
+    public function refreshData()
+    {
+        $this->loadSoData();
+    }
+
     public function editjobs($id_job)
     {
         $this->editjob = true;
@@ -72,7 +85,7 @@ class Jobfair extends Component
 
         $this->showConfirm = false;
         $service->delete($this->deleteId);
-        $this->so = So::with('list_job')->get();
+        $this->loadSoData();
         $this->dispatch('tutupforms',message:'Berhasil hapus job');
 
     }
@@ -84,6 +97,7 @@ class Jobfair extends Component
             ->delete();
 
         if ($deleted > 0) {
+            $this->loadSoData();
             $this->dispatch('tutupforms', message: 'Peserta berhasil dihapus');
             return;
         }
@@ -102,7 +116,7 @@ class Jobfair extends Component
 
     public function mount()
     {
-        $this->so = So::with(['list_job.list_ww.corelist.detail'])->get();
+        $this->loadSoData();
     }
     public function render()
     {

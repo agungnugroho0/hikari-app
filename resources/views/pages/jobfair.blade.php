@@ -43,11 +43,15 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <div>
+            <h1 class="text-2xl font-bold text-neutral-900">Job Order</h1>
+            {{-- <p class="text-sm text-neutral-600">Grafik kelulusan, grafik absensi per kelas per bulan, dan export laporan.</p> --}}
+    </div>
     @if ($bukaform)
-        <x-kembali wire:click="tutupforms"/>
+        <x-kembali wire:click="tutupforms" />
         <livewire:form.insert_jobfair />
     @elseif ($editjob)
-        <x-kembali wire:click="tutupforms"/>
+        <x-kembali wire:click="tutupforms" />
         <livewire:form.edit-job-fair />
     @elseif ($tambahpesertaform)
         <button wire:click="tutupforms"
@@ -55,12 +59,12 @@
         </button>
         <livewire:form.tambahpesertaforms />
     @elseif ($lolosform)
-        <x-kembali wire:click="tutupforms"/>
+        <x-kembali wire:click="tutupforms" />
         <livewire:form.lolos-form />
     @else
         <button wire:click="bukaforms"
             class="px-3 py-2 bg-slate-100 rounded shadow hover:bg-slate-200 cursor-pointer transition-all mb-3">+
-            Training
+            Job
             Order
         </button>
         <div class="grid grid-cols-1 sm:flex gap-3 flex-wrap justify-evenly">
@@ -76,15 +80,12 @@
                         </svg>
                     </div>
 
-
-                    {{-- LIST JOB --}}
                     <div x-show="open || window.innerWidth >= 1280" x-transition class="flex-1 xl:block ">
                         @foreach ($item->list_job as $job)
                             <div class="bg-gray-50 p-1 flex">
                                 <p class="font-normal">{{ $job->nama_job }}</p>
 
                                 <div x-data="{ open: false }" class="ml-auto relative pl-5">
-
                                     <button @click.stop="open = !open">
                                         ---
                                     </button>
@@ -106,7 +107,6 @@
                                             </li>
                                         </ul>
                                     </div>
-
                                 </div>
                             </div>
                             <div wire:click.stop="tambahpeserta('{{ $job->id_job }}')"
@@ -116,24 +116,29 @@
                                     <p class="px-2">{{ $loop->iteration }}</p>
                                     <p>{{ $l->corelist->detail->nama_lengkap }}</p>
                                     <div class="ml-auto flex gap-3">
-                                        <p wire:click.stop="lolos('{{ $l->corelist->nis }}','{{ $job->id_job }}')"
-                                            class="cursor-pointer hover:text-green-700 text-2xl">
-                                            ✓</p>
-                                        <p wire:click.stop="gagal('{{ $l->corelist->nis }}','{{ $job->id_job }}')"
-                                            class="cursor-pointer hover:text-red-500 text-2xl">✗
-                                        </p>
+                                        <button type="button"
+                                            wire:click.stop="lolos('{{ $l->corelist->nis }}','{{ $job->id_job }}')"
+                                            class="cursor-pointer hover:text-green-700 text-2xl leading-none">
+                                            &check;
+                                        </button>
+                                        <button type="button"
+                                            wire:click.stop="gagal('{{ $l->corelist->nis }}','{{ $job->id_job }}')"
+                                            class="cursor-pointer hover:text-red-500 text-2xl leading-none">
+                                            &times;
+                                        </button>
                                     </div>
                                 </div>
                             @endforeach
                         @endforeach
                     </div>
-
                 </div>
             @endforeach
         </div>
     @endif
-    {{-- loading time --}}
-    <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50" wire:loading>
+
+    <x-loading wire:loading wire:target="tutupforms,bukaforms,editjobs,tambahpeserta,lolos,gagal,confirmDelete"></x-loading>
+
+    {{-- <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50" wire:loading>
         <div role="status">
             <svg aria-hidden="true"
                 class="w-8 h-8 text-neutral-tertiary animate-spin fill-red-900 mx-auto translate-y-5"
@@ -147,14 +152,13 @@
             </svg>
             <span class="sr-only">Loading...</span>
         </div>
-    </div>
-    {{-- konfirmasi delete --}}
+    </div> --}}
+
     @if ($showConfirm)
         <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
             <div class="bg-white rounded-lg shadow-xl p-6 w-80 text-center">
-
                 <h2 class="text-lg font-bold mb-3 text-red-600">
-                    ⚠ Hapus Job?
+                    Hapus Job?
                 </h2>
 
                 <p class="text-sm text-gray-600 mb-5">
@@ -163,7 +167,6 @@
                 </p>
 
                 <div class="flex gap-3 justify-center">
-
                     <button wire:click="$set('showConfirm', false)"
                         class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
                         Batal
@@ -172,7 +175,6 @@
                     <button wire:click="deletejobs" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
                         Ya, Hapus
                     </button>
-
                 </div>
             </div>
         </div>

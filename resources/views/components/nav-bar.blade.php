@@ -46,6 +46,24 @@
                         <span class="ms-3">Job Order</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ 'laporan' }}" wire:navigate
+                        class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
+                        <span class="ms-3">Laporan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ 'dokumen' }}" wire:navigate
+                        class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
+                        <span class="ms-3">Dokumen</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ 'setting' }}" wire:navigate
+                        class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
+                        <span class="ms-3">Settings</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </aside>

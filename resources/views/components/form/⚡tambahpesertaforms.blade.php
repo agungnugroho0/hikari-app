@@ -35,6 +35,7 @@ new class extends Component {
     public function store()
     {
         $this->jobfair->storePeserta();
+        $this->dispatch('jobfair-updated');
         $this->dispatch('tutupforms', message: 'Peserta Berhasil ditambahkan');
     }
 };
@@ -60,7 +61,7 @@ new class extends Component {
         <div class="flex flex-col">
             <label wire:model="jobfair.penempatan" for="penempatan"
                 class="text-xs text-gray-600 py-1 mt-2">Penempatan</label>
-            <input type="text" name="penempatan" id="penempatan"
+            <input type="text" wire:model="jobfair.penempatan" name="penempatan" id="penempatan"
                 class="bg-gray-200 border-0 focus:ring-red-800 rounded">
         </div>
         <div class="flex flex-col">
@@ -75,6 +76,9 @@ new class extends Component {
         class="w-full px-2 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded"
         placeholder="Search" />
     <form wire:submit.prevent="store">
+        @error('jobfair.siswa')
+            <div class="mt-2 text-sm text-orange-600">{{ $message }}</div>
+        @enderror
         <div class="grid grid-cols-2 gap-2 mt-2">
             @foreach ($this->daftarSiswa as $s)
                 <div>
