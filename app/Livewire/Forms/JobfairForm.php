@@ -97,10 +97,23 @@ public function update()
 
 public function storePeserta(){
     $this->validate([
-        $this->siswa = ('required|min:1')
+        'siswa' => 'required|array|min:1',
+    ], [
+        'siswa.required' => 'Pilih minimal satu peserta.',
+        'siswa.array' => 'Format peserta tidak valid.',
+        'siswa.min' => 'Pilih minimal satu peserta.',
     ]);
+
     DB::transaction(function(){
         foreach($this->siswa as $nis){
+            $sudahAda = ListWawancara::where('id_job', $this->id_job)
+                ->where('nis', $nis)
+                ->exists();
+
+            if ($sudahAda) {
+                continue;
+            }
+
             $id = $this->generateid2();
             $this->wawancara = ListWawancara::create([
                 'id_job' => $this->id_job,

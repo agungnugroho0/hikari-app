@@ -20,6 +20,10 @@
         </div>
     </div>
     <x-loading wire:loading wire:target="mode,muat"></x-loading>
+    <div>
+            <h1 class="text-2xl font-bold text-neutral-900">Staff</h1>
+            {{-- <p class="text-sm text-neutral-600">Grafik kelulusan, grafik absensi per kelas per bulan, dan export laporan.</p> --}}
+    </div>
     @if ($metode === 'form')
         <x-kembali wire:click="muat"/>
         <livewire:form.tambah-staff />
@@ -29,7 +33,7 @@
     @else
         <x-tambah-form wire:click="mode('form')">+ Staff</x-tambah-form>
 
-        <div class="flex gap-5 flex-wrap">
+        <div class="grid gap-5 grid-cols-3">
         @foreach ($staff as $s)
             <div class="bg-gray-100 rounded p-5 hover:bg-gray-50">
                 <div class="flex">

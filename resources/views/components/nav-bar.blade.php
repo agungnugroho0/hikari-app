@@ -47,6 +47,33 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ 'laporan' }}" wire:navigate
+                        class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
+                        <span class="ms-3">Laporan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ 'dokumen' }}" wire:navigate
+                        class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
+                        <span class="ms-3">Dokumen</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ 'setting' }}" wire:navigate
+                        class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
+                        <span class="ms-3">Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button 
+                            class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group cursor-pointer">
+                            <span class="ms-3">Logout</span>
+                        </button>
+                    </form>
+                </li>
+                <li>
                     <a href="{{ 'kelas' }}" wire:navigate
                         class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
                         <span class="ms-3">Kelas</span>

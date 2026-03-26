@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('id_t')->primary();
             $table->string('nis');
             $table->foreign('nis')->references('nis')->on('core')->cascadeOnDelete();
-            $table->string('id_so');
+            $table->string('id_so')->nullable();
             $table->foreign('id_so')->references('id_so')->on('so')->cascadeOnUpdate();
             $table->date('tgl_terbit');
             $table->string('nama_tagihan');

@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use Illuminate\Support\Facades\Hash;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\staff>
  */
@@ -18,11 +18,11 @@ class StaffFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_staff' => fake()->unique()->name(),
+            // 'id_staff' => fake()->unique()->numberBetween(100,900),
             'nama_s' => fake()->name(),
             'akses' => fake()->randomElement(['admin','guru','dev']),
             'foto_s' => Str::random(10),
-            'password' => '123456',
+            'password' => Hash::make('123456'),
             'username' => fake()->userName(),
         ];
     }

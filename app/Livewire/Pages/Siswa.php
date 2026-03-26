@@ -6,7 +6,7 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.admin')] 
-#[Title('Dashboard')]
+#[Title('Siswa')]
 class Siswa extends Component
 {
     

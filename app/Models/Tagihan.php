@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tagihan extends Model
 {
+    use HasFactory;
+
     protected $guarded=[];
     protected $table = 'tagihan';
     protected $primaryKey = 'id_t';
@@ -19,7 +22,7 @@ public $incrementing = false;
         }
         
         public function tagihanso()
-        {return $this->BelongsTo(So::class,'id_so','id_so');}
+        {return $this->belongsTo(So::class,'id_so','id_so');}
 
         public function listtx()
         { return $this->hasMany(Transaksi::class,'id_t','id_t');}

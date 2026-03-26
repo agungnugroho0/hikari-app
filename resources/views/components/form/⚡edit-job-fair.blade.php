@@ -21,6 +21,7 @@ new class extends Component {
     public function updates()
     {
         $this->jobfair->update();
+        $this->dispatch('jobfair-updated');
         $this->dispatch('tutupforms', message: 'Job berhasil diupdate!');
     }
 
@@ -70,7 +71,7 @@ new class extends Component {
         <div class="flex flex-col">
             <label wire:model="jobfair.penempatan" for="penempatan"
                 class="text-xs text-gray-600 py-1 mt-2">Penempatan</label>
-            <input type="text" name="penempatan" id="penempatan" class="border-gray-500 focus:ring-red-800 rounded">
+            <input type="text" wire:model="jobfair.penempatan" name="penempatan" id="penempatan" class="border-gray-500 focus:ring-red-800 rounded">
         </div>
         <div class="flex flex-col">
             <label for="metode" class="text-xs text-gray-600 py-1 mt-2">Model Seleksi</label>
@@ -86,7 +87,7 @@ new class extends Component {
             @enderror
         </div>
         <button wire:submit wire:loading.attr="disabled"
-            class="bg-red-900 p-3 font-bold text-white hover:bg-red-700 transition cursor-pointer">Edit Training
+            class="bg-red-900 p-3 font-bold text-white hover:bg-red-700 transition cursor-pointer">Edit Job
             Order</button>
     </form>
 </div>

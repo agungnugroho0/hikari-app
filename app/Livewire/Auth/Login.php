@@ -43,7 +43,7 @@ class Login extends Component
 
             return match ($user->akses) {
                 'admin' => redirect()->to('/dashboard'),
-                'guru'  => redirect()->to('/guru/dashboard'),
+                'guru'  => redirect()->to('/sensei/dashboard'),
                 'dev'   => redirect()->to('/dev/dashboard'),
                 default => abort(403),
             };

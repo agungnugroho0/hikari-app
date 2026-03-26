@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Transaksi extends Model
 {
-        protected $guarded=[];
-    protected $table = 'tagihan';
-    protected $primaryKey = 'id_t';
+    use HasFactory;
+
+    protected $guarded=[];
+    protected $table = 'transaksi';
+    protected $primaryKey = 'id_tx';
     protected $keyType = 'string';
 public $incrementing = false;
     public $timestamps=false;

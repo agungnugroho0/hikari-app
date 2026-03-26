@@ -13,7 +13,7 @@
             position: absolute;
             top: 40px;
             right: 40px;
-            width: 80px;
+            width: 60px;
         }
     </style>
 
@@ -21,8 +21,9 @@
 
 <div class="wrapper">
 
-    <img src="{{ public_path('img/nafuda.png') }}" class="nafuda">
-
-    <img src="data:image/png;base64,{{ $qr }}" class="qr">
+    {{-- <img src="{{ public_path('img/nafuda.png') }}" class="nafuda"> --}}
+    <img src="{{ $nafuda1 }}" class="nafuda">
+    <img src="{{ $nafuda2 }}" class="nafuda">
+    <img src="data:image/svg+xml;base64,{{ $qr }}" class="qr" alt="QR {{ $siswa->nis }}">
 
 </div>

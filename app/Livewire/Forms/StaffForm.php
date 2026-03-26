@@ -48,15 +48,15 @@ class StaffForm extends Form
         );
     }
 
-    public function setModels($id)
-    {
-        $staff = Staff::findorfail($id);
-        $this->id_staff = $staff->id_staff;
-        $this->nama_s = $staff->nama_s;
-        $this->username = $staff->username;
-        $this->akses = $staff->akses;
-        $this->foto_s = $staff->foto_s;
-    }
+        public function setModels($id)
+        {
+            $staff = Staff::findorfail($id);
+            $this->id_staff = $staff->id_staff;
+            $this->nama_s = $staff->nama_s;
+            $this->username = $staff->username;
+            $this->akses = $staff->akses;
+            $this->foto_s = $staff->foto_s;
+        }
 
     public function update()
     {

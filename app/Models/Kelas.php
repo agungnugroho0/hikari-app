@@ -22,7 +22,12 @@ class Kelas extends Model
 
     public function core()
     {
-        return $this->belongsTo(Core::class);
+        return $this->hasMany(Core::class, 'id_kelas', 'id_kelas');
+    }
+
+    public function pengajar()
+    {
+        return $this->belongsTo(Staff::class, 'id_pengajar', 'id_staff');
     }
 
     public function guru()

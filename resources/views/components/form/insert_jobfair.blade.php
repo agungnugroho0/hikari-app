@@ -14,7 +14,9 @@ new class extends Component {
 
     public function insert(){
         $this->jobfair->store();
+        $this->dispatch('jobfair-updated');
         $this->dispatch('tutupforms', message: 'Data berhasil disimpan!');
+    }
 }
 };
 ?>
@@ -74,7 +76,7 @@ new class extends Component {
             @enderror
         </div>
         <button wire:loading.attr="disabled"
-            class="bg-red-900 p-3 font-bold text-white hover:bg-red-700 transition cursor-pointer">Tambah Training
+            class="bg-red-900 p-3 font-bold text-white hover:bg-red-700 transition cursor-pointer">Tambah Job
             Order</button>
     </form>
 </div>
