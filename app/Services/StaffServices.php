@@ -73,7 +73,7 @@ class StaffServices
     {
         return DB::transaction(function () use ($id) {
             $staff = Staff::findOrFail($id);
-            // dd($staff);
+            $staff->delete();
         });
     }
 }
