@@ -23,4 +23,9 @@ class Staff extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function kelas()
+    {
+        return $this->hasOne(Kelas::class, 'id_staff', 'id_staff');
+    }
 }

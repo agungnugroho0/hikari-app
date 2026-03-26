@@ -13,12 +13,8 @@ new class extends Component {
     }
 
     public function insert(){
-    try {
         $this->jobfair->store();
         $this->dispatch('tutupforms', message: 'Data berhasil disimpan!');
-    } catch (\Throwable $e) {
-        dd($e->getMessage());
-    }
 }
 };
 ?>

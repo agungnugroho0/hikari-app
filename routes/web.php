@@ -3,6 +3,8 @@
 use App\Http\Controllers\NafudaController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Pages\Jobfair;
+use App\Livewire\Pages\Kelas;
+use App\Livewire\Pages\SendingOrganizer;
 use App\Livewire\Pages\Siswa;
 use App\Livewire\Pages\Staff;
 use Illuminate\Support\Facades\Route;
@@ -15,9 +17,11 @@ Route::get('/', Login::class)->name('login');
 Route::middleware(['auth', 'akses:admin'])->group(function () {
     Route::livewire('/dashboard', 'pages::dashboard')->name('pages::dashboard');
     Route::get('/siswa', Siswa::class)->name('pages::siswa');
-    Route::get('/jobfair', Jobfair::class)->name('pages::jobfair');
-    Route::get('/nafuda/{nis}', [NafudaController::class, 'download'])->name('pdf');
     Route::get('/staff', Staff::class)->name('pages::staff');
+    Route::get('/nafuda/{nis}', [NafudaController::class, 'download'])->name('pdf');
+    Route::get('/jobfair', Jobfair::class)->name('pages::jobfair');
+    Route::get('/kelas', Kelas::class)->name('kelas');
+    Route::get('/so', SendingOrganizer::class)->name('so');
 });
 Route::middleware(['auth', 'akses:guru'])->group(function () {
     Route::get('/guru/dashboard', function () {

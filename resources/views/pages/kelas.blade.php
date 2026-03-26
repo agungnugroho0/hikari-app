@@ -1,4 +1,5 @@
 <div>
+    <x-loading wire:loading wire:target="mode,muat"></x-loading>
     <div x-data="{
         show: false,
         msg: '',
@@ -19,23 +20,20 @@
             <span x-text="msg"></span>
         </div>
     </div>
-    <x-loading wire:loading wire:target="mode,muat"></x-loading>
-    @if ($metode === 'form')
-        <x-kembali wire:click="muat"/>
-        <livewire:form.tambah-staff />
-        @elseif ($metode === 'edit')
-        <x-kembali wire:click="muat"/>
-        <livewire:form.edit-staff :id="$staff_id"/>
-    @else
-        <x-tambah-form wire:click="mode('form')">+ Staff</x-tambah-form>
-
-        <div class="flex gap-5 flex-wrap">
-        @foreach ($staff as $s)
-            <div class="bg-gray-100 rounded p-5 hover:bg-gray-50">
-                <div class="flex">
-                <img src="{{ $s->foto_s ? Storage::url($s->foto_s) : Storage::url('foto/foto.jpeg') }}" alt="foto_s" class="rounded-full w-12 h-12 object-cover">
-                    <div x-data="{ open: false }" class="ml-auto relative">
-
+    @if ($metode ==='form')
+    <x-kembali wire:click="muat"/>
+    <livewire:tambah-kelas />
+    @elseif ($metode === 'edit')
+    <x-kembali wire:click="muat"/>
+    <livewire:form.edit-kelas class="edit-kelas" :id="$id_kls" />
+    @else    
+    <x-tambah-form wire:click="mode('form')">+ Kelas</x-tambah-form>
+    <div class="grid grid-cols-3 gap-3">
+    @foreach ( $kelas as $k)
+        <div class="bg-gray-100 p-2 rounded">
+            <div class="flex ">
+            <p class="font-bold ">Kelas {{ $k->nama_kelas }}</p>
+            <div x-data="{ open: false }" class="ml-auto relative mr-2">
                             <button @click.stop="open = !open">
                                 ---
                             </button>
@@ -44,13 +42,13 @@
                                 class="absolute right-0 mt-2 z-10 bg-white rounded shadow shadow-gray-200 w-40">
                                 <ul class="p-2 text-sm">
                                     <li>
-                                        <div wire:click.stop="mode('edit', {{ $s->id_staff }})"
+                                        <div wire:click.stop="mode('edit', {{ $k->id_kelas }})"
                                             class="px-2 py-1 hover:bg-gray-100 cursor-pointer">
                                             Edit
                                         </div>
                                     </li>
                                     <li>
-                                        <div wire:click.stop="confirmDelete('{{ $s->id_staff }}')"
+                                        <div wire:click.stop="confirmDelete('{{ $k->id_kelas }}')"
                                             class="px-2 py-1 hover:bg-gray-100 cursor-pointer text-red-500">
                                             Delete
                                         </div>
@@ -59,13 +57,16 @@
                             </div>
 
                         </div>
-                </div>
-                <p class="font-bold">{{ $s->nama_s }}</p>
-                <p>Username : <span>{{$s->username}}</span></p>
-                <p>Akses : <span>{{$s->akses}}</span></p>
             </div>
-        @endforeach
+            <p>Tingkat : <i>{{$k->tingkat}}</i></p>
+            @if ($k->id_pengajar !== NULL)
+            <p>Nama Pengajar : <i>{{$k->guru->nama_s }}</i></p>
+            @else    
+            <p>Nama Pengajar : -</p>
+            @endif
         </div>
+    @endforeach
+    </div>
     @endif
 
     {{-- konfirmasi delete --}}
@@ -74,7 +75,7 @@
             <div class="bg-white rounded-lg shadow-xl p-6 w-80 text-center">
 
                 <h2 class="text-lg font-bold mb-3 text-red-600">
-                    ⚠ Hapus Staff?
+                    ⚠ Hapus Kelas? Siswa didalamnya juga akan ikut terhapus
                 </h2>
 
                 <div class="flex gap-3 justify-center">
@@ -84,7 +85,7 @@
                         Batal
                     </button>
 
-                    <button wire:click="deletestaff" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                    <button wire:click="deletekelas" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
                         Ya, Hapus
                     </button>
 

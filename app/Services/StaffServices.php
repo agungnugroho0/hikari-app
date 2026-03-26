@@ -17,7 +17,7 @@ class StaffServices
         $terbaru = Staff::where('id_staff', 'like', $prefix.'%')->lockForUpdate()->orderBy('id_staff', 'desc')->first();
 
         if ($terbaru) {
-            $number = (int) substr($terbaru->id_job, -3);
+            $number = (int) substr($terbaru->id_staff, -3);
             $number++;
         } else {
             $number = 1;
@@ -73,6 +73,9 @@ class StaffServices
     {
         return DB::transaction(function () use ($id) {
             $staff = Staff::findOrFail($id);
+            if ($staff->foto_s && Storage::disk('public')->exists($staff->foto_s)) {
+                Storage::disk('public')->delete($staff->foto_s);
+            }
             $staff->delete();
         });
     }
