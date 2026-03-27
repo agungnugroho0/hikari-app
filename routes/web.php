@@ -10,7 +10,9 @@ use App\Livewire\Pages\Dashboard;
 use App\Livewire\Pages\Dokumen;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Jobfair;
+use App\Livewire\Pages\Kelas;
 use App\Livewire\Pages\Laporan;
+use App\Livewire\Pages\SendingOrganizer as So;
 use App\Livewire\Pages\Setelan;
 use App\Livewire\Pages\Siswa;
 use App\Livewire\Pages\Staff;
@@ -30,6 +32,8 @@ Route::middleware(['auth', 'akses:admin'])->group(function () {
     Route::get('/staff', Staff::class)->name('pages::staff');
     Route::get('/laporan', Laporan::class)->name('pages::laporan');
     Route::get('/dokumen', Dokumen::class)->name('pages::dokumen');
+    Route::get('/kelas', Kelas::class)->name('kelas');
+    Route::get('/so', So::class)->name('so');
     Route::get('/laporan/formulir-nilai', [ReportController::class, 'monthlyScoreSheet'])->name('reports.monthly-score');
     Route::get('/laporan/absensi', [ReportController::class, 'monthlyAttendanceSheet'])->name('reports.attendance');
     Route::get('/billing-statement/{nis}', [BillingStatementController::class, 'download'])->name('billing.statement');

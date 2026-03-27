@@ -23,15 +23,17 @@
         @elseif ($siswa)
 
             <div class="rounded-2xl bg-gradient-to-r from-amber-50 via-white to-neutral-50 px-4 py-4">
-                <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                <div class="2xl:flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                     <div class="flex items-center gap-3">
                         <img src="{{ $siswa->foto ? Storage::url($siswa->foto) : asset('img/logo.png') }}"
                             class="h-14 w-14 rounded-xl object-cover ring-1 ring-neutral-200">
                         <div>
                             <p class="text-xs font-semibold uppercase tracking-[0.24em] text-neutral-400">Profil siswa</p>
-                            <h2 class="mt-1 text-lg font-semibold text-neutral-900">{{ optional($siswa->detail)->nama_lengkap }}</h2>
+                            <h2 class="mt-1 text-lg font-semibold text-neutral-900">
+                                {{ data_get($siswa, 'detail.nama_lengkap', '-') }}
+                            </h2>
                             <div class="mt-1 flex flex-wrap items-center gap-2 text-sm text-neutral-500">
-                                <p>{{ $siswa->nis }} | Kelas {{ optional($siswa->kelas)->nama_kelas ?? '-' }}</p>
+                                <p>{{ $siswa->nis ?? '-' }} | Kelas {{ data_get($siswa, 'kelas.nama_kelas', '-') }} </p>
                                 @if ($siswa->status === 'lolos')
                                     <button
                                         x-on:click.stop="if (confirm('Peringatan: aksi UNFIT akan membatalkan kelulusan siswa, menghapus data kelulusan, dan menghapus tagihan serta transaksi yang terkait SO. Lanjutkan?')) { $wire.unfit() }"
@@ -43,7 +45,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-2 mt-2 2xl:mt-0">
                         @if ($siswa->foto)
                             <a href="{{ Storage::url($siswa->foto) }}"
                                 download="{{ optional($siswa->detail)->nama_lengkap }}"
@@ -65,7 +67,7 @@
                             Buat Tagihan
                         </button>
 
-                        <a href="https://wa.me/{{ optional($siswa->detail)->wa }}"
+                        <a href="https://wa.me/{{ data_get($siswa, 'detail.wa') }}"
                             class="rounded-xl bg-green-700 px-3 py-2 text-sm font-medium text-white transition hover:bg-green-600">
                             WhatsApp
                         </a>
@@ -81,42 +83,60 @@
                     </div>
 
                     <dl class="grid gap-3 sm:grid-cols-2">
+
                         <div class="rounded-xl bg-neutral-50 p-3">
-                            <dt class="text-xs font-medium uppercase tracking-wide text-neutral-500">Nama lengkap</dt>
-                            <dd class="mt-2 text-sm font-medium text-neutral-900">{{ optional($siswa->detail)->nama_lengkap ?: '-' }}</dd>
+                            <dt class="label">Nama lengkap</dt>
+                            <dd>{{ data_get($siswa, 'detail.nama_lengkap', '-') }}</dd>
                         </div>
+
                         <div class="rounded-xl bg-neutral-50 p-3">
-                            <dt class="text-xs font-medium uppercase tracking-wide text-neutral-500">Panggilan</dt>
-                            <dd class="mt-2 text-sm font-medium text-neutral-900">{{ optional($siswa->detail)->panggilan ?: '-' }}</dd>
+                            <dt class="label">Panggilan</dt>
+                            <dd>{{ data_get($siswa, 'detail.panggilan', '-') }}</dd>
                         </div>
+
                         <div class="rounded-xl bg-neutral-50 p-3">
-                            <dt class="text-xs font-medium uppercase tracking-wide text-neutral-500">Tanggal lahir</dt>
-                            <dd class="mt-2 text-sm font-medium text-neutral-900">{{ optional(optional($siswa->detail)->tgl_lahir)->format('Y-m-d') ?: '-' }}</dd>
+                            <dt class="label">Tanggal lahir</dt>
+                            <dd>
+                                {{ data_get($siswa, 'detail.tgl_lahir') 
+                                    ? \Carbon\Carbon::parse(data_get($siswa, 'detail.tgl_lahir'))->format('Y-m-d') 
+                                    : '-' }}
+                            </dd>
                         </div>
+
                         <div class="rounded-xl bg-neutral-50 p-3">
-                            <dt class="text-xs font-medium uppercase tracking-wide text-neutral-500">Umur</dt>
-                            <dd class="mt-2 text-sm font-medium text-neutral-900">{{ optional(optional($siswa->detail)->tgl_lahir)->age ? optional(optional($siswa->detail)->tgl_lahir)->age . ' Tahun' : '-' }}</dd>
+                            <dt class="label">Umur</dt>
+                            <dd>
+                                {{ data_get($siswa, 'detail.tgl_lahir') 
+                                    ? \Carbon\Carbon::parse(data_get($siswa, 'detail.tgl_lahir'))->age . ' Tahun' 
+                                    : '-' }}
+                            </dd>
                         </div>
+
                         <div class="rounded-xl bg-neutral-50 p-3">
-                            <dt class="text-xs font-medium uppercase tracking-wide text-neutral-500">Tempat lahir</dt>
-                            <dd class="mt-2 text-sm font-medium text-neutral-900">{{ optional($siswa->detail)->tempat_lhr ?: '-' }}</dd>
+                            <dt class="label">Tempat lahir</dt>
+                            <dd>{{ data_get($siswa, 'detail.tempat_lhr', '-') }}</dd>
                         </div>
+
                         <div class="rounded-xl bg-neutral-50 p-3">
-                            <dt class="text-xs font-medium uppercase tracking-wide text-neutral-500">Status</dt>
-                            <dd class="mt-2 text-sm font-medium capitalize text-neutral-900">{{ optional($siswa->detail)->pernikahan ?: '-' }}</dd>
+                            <dt class="label">Status</dt>
+                            <dd>{{ data_get($siswa, 'detail.pernikahan', '-') }}</dd>
                         </div>
+
                         <div class="rounded-xl bg-neutral-50 p-3 sm:col-span-2">
-                            <dt class="text-xs font-medium uppercase tracking-wide text-neutral-500">Alamat</dt>
-                            <dd class="mt-2 text-sm font-medium text-neutral-900">{{ optional($siswa->detail)->alamat ?: '-' }}</dd>
+                            <dt class="label">Alamat</dt>
+                            <dd>{{ data_get($siswa, 'detail.alamat', '-') }}</dd>
                         </div>
+
                         <div class="rounded-xl bg-neutral-50 p-3">
-                            <dt class="text-xs font-medium uppercase tracking-wide text-neutral-500">No. telepon</dt>
-                            <dd class="mt-2 text-sm font-medium text-neutral-900">{{ optional($siswa->detail)->wa ?: '-' }}</dd>
+                            <dt class="label">No. telepon</dt>
+                            <dd>{{ data_get($siswa, 'detail.wa', '-') }}</dd>
                         </div>
+
                         <div class="rounded-xl bg-neutral-50 p-3">
-                            <dt class="text-xs font-medium uppercase tracking-wide text-neutral-500">No. wali</dt>
-                            <dd class="mt-2 text-sm font-medium text-neutral-900">{{ optional($siswa->detail)->wa_wali ?: '-' }}</dd>
+                            <dt class="label">No. wali</dt>
+                            <dd>{{ data_get($siswa, 'detail.wa_wali', '-') }}</dd>
                         </div>
+
                     </dl>
                 </section>
 
@@ -151,7 +171,7 @@
                     <div class="rounded-2xl bg-white p-4">
                         <div class="flex flex-wrap items-center gap-2">
                             <p class="grow text-base font-semibold text-neutral-900">Daftar tagihan</p>
-                            @if ($siswa->listtagihan_siswa)
+                            @if (!empty($siswa->listtagihan_siswa))
                                 <a href="{{ route('billing.statement', $siswa->nis) }}" class="text-sm font-medium text-red-700">Cetak Billing Statement</a>
                             @endif
                         </div>
