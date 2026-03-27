@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('core', function (Blueprint $table) {
             $table->string('nis')->primary();
             $table->unsignedInteger('id_kelas');
-            $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');
             $table->string('status');
             $table->string('foto')->nullable();
             $table->timestamps();

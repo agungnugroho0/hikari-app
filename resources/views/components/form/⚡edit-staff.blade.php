@@ -5,7 +5,7 @@ use Livewire\WithFileUploads;
 
 new class extends Component
 {
-    public $isi;
+    
 
     use WithFileUploads;
 

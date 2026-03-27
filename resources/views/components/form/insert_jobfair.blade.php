@@ -17,6 +17,7 @@ new class extends Component {
         $this->dispatch('jobfair-updated');
         $this->dispatch('tutupforms', message: 'Data berhasil disimpan!');
     }
+}
 };
 ?>
 

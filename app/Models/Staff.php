@@ -24,7 +24,8 @@ class Staff extends Authenticatable
         'password',
     ];
 
-    public function kelas(){
-        return $this->hasOne(Kelas::class,'id_pengajar','id_staff');
+    public function kelas()
+    {
+        return $this->hasOne(Kelas::class, 'id_staff', 'id_staff');
     }
 }

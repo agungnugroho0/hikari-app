@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Livewire\Pages;
+
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -8,10 +10,10 @@ use Livewire\Component;
 #[Title('Settings')]
 class Setelan extends Component
 {
+    public function mount() {}
 
-    public function mount(){
-    }
-    
     public function render()
-    {return view ('pages.setelan');}
-};
+    {
+        return view('pages.setelan');
+    }
+}

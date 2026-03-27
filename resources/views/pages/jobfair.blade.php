@@ -43,7 +43,7 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <div>
+    <div class="mb-2">
             <h1 class="text-2xl font-bold text-neutral-900">Job Order</h1>
             {{-- <p class="text-sm text-neutral-600">Grafik kelulusan, grafik absensi per kelas per bulan, dan export laporan.</p> --}}
     </div>
@@ -67,7 +67,7 @@
             Job
             Order
         </button>
-        <div class="grid grid-cols-1 sm:flex gap-3 flex-wrap justify-evenly">
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-3 flex-wrap justify-evenly">
             @foreach ($so as $item)
                 <div class="rounded shadow " x-data="{ open: false }">
                     <h3 class="md:hidden xl:block bg-gray-100 p-1 font-bold">{{ $item->nama_so }}</h3>
