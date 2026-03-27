@@ -11,6 +11,7 @@ use App\Livewire\Pages\Dokumen;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Jobfair;
 use App\Livewire\Pages\Laporan;
+use App\Livewire\Pages\Presensi;
 use App\Livewire\Pages\Setelan;
 use App\Livewire\Pages\Siswa;
 use App\Livewire\Pages\Staff;
@@ -45,6 +46,7 @@ Route::middleware(['auth', 'akses:admin'])->group(function () {
 Route::middleware(['auth', 'akses:guru'])->group(function () {
     Route::get('/sensei/dashboard', Home::class)->name('home');
     Route::get('/sensei/siswa', daftarSiswaGuru::class)->name('siswa');
+    Route::get('/sensei/presensi', Presensi::class)->name('presensi');
     // Route::get('/sensei/siswa',function(){dd('ini siswa');})->name('siswa');
 });
 Route::middleware(['auth', 'akses:dev'])->group(function () {
