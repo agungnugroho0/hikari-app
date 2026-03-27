@@ -10,12 +10,7 @@ use App\Services\presensiService;
 
 new class extends Component
 {
-    // public $service;
 
-    // public function mount(PresensiService $service)
-    // {
-    //     $this->service = $service;
-    // }
     #[Computed]
     public function daftarSiswa()
     {
@@ -26,8 +21,7 @@ new class extends Component
         return Core::where('id_kelas', $staff->kelas->id_kelas) // 🔥 ini fix
             ->where('status', 'siswa')->whereDoesntHave('absensi', function ($q) use ($today) {
                 $q->whereDate('tgl', $today);
-            })
-            ->get();
+            })->get();
     }
 
     public function absen($id, $status,PresensiService $service)

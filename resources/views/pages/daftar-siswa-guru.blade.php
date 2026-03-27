@@ -1,7 +1,7 @@
 <div>
     <x-kembali wire:navigate href="{{ route('home') }}"></x-kembali>
     @foreach ( $siswa->kelas->core as $s )
-        <div class="bg-gray-50 m-1 py-2 flex border-b">
+        <div class="bg-gray-50 m-1 p-3 flex border-b ">
            <p class="grow"> {{ $s->detail->nama_lengkap }} </p>
            <a href="https://wa.me/{{ optional($siswa->detail)->wa }}"
                             class="w-5">
