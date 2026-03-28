@@ -165,6 +165,14 @@ class Laporan extends Component
     {
         $startDate = Carbon::create($this->year, $this->month, 1)->startOfMonth();
         $endDate = $startDate->copy()->endOfMonth();
+        $daysInMonth = $startDate->daysInMonth;
+
+        $totalStudents = (int) DB::table('core')
+            ->when($this->selectedClassId, fn ($query) => $query->where('id_kelas', $this->selectedClassId))
+            ->distinct('nis')
+            ->count('nis');
+
+        $totalStudentDays = max(1, $totalStudents * $daysInMonth);
 
         $rows = DB::table('absen')
             ->join('core', 'core.nis', '=', 'absen.nis')
@@ -198,7 +206,7 @@ class Laporan extends Component
             ->groupBy('day_number')
             ->map(fn (Collection $items) => $items->pluck('total', 'status_key'));
 
-        $series = collect(range(1, $startDate->daysInMonth))
+        $series = collect(range(1, $daysInMonth))
             ->map(function (int $dayNumber) use ($groupedRows, $startDate) {
                 $totals = $groupedRows->get($dayNumber, collect());
 
@@ -215,13 +223,16 @@ class Laporan extends Component
             ->all();
 
         $recap = collect(self::ATTENDANCE_STATUSES)
-            ->map(function (array $status, string $key) use ($rows) {
+            ->map(function (array $status, string $key) use ($rows, $totalStudentDays) {
+                $total = (int) $rows->where('status_key', $key)->sum('total');
+
                 return [
                     'key' => $key,
                     'label' => $status['label'],
                     'color' => $status['color'],
                     'background' => $status['background'],
-                    'total' => (int) $rows->where('status_key', $key)->sum('total'),
+                    'total' => $total,
+                    'percentage' => round(($total / $totalStudentDays) * 100, 2),
                 ];
             })
             ->values()
@@ -236,7 +247,8 @@ class Laporan extends Component
                 'Semua Kelas'
             ),
             'selected_month_name' => $startDate->translatedFormat('F'),
-            'total_records' => array_sum(array_column($recap, 'total')),
+            'total_students' => $totalStudents,
+            'total_student_days' => $totalStudentDays,
             'max_total' => max(1, ...array_map(fn (array $item) => max($item['hadir'], $item['mensetsu'], $item['ijin'], $item['alfa']), $series)),
         ];
     }

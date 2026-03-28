@@ -5,7 +5,13 @@
             <p class="text-sm">{{ $nama }}</p>
             <p class="text-sm text-gray-600"> {{$sensei->kelas->nama_kelas}}</p>
         </div>
-        <div>logout</div>
+        <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button 
+                            class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group cursor-pointer">
+                            <span class="ms-3">Logout</span>
+                        </button>
+                    </form>
     </header>
     <p>Grafik siswa lolos</p>
     <x-menu-bar></x-menu-bar>

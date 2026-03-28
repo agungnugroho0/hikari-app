@@ -36,17 +36,11 @@ Route::middleware(['auth', 'akses:admin'])->group(function () {
     Route::get('/kelas', Kelas::class)->name('kelas');
     Route::get('/so', So::class)->name('so');
     Route::get('/laporan/formulir-nilai', [ReportController::class, 'monthlyScoreSheet'])->name('reports.monthly-score');
-    Route::get('/laporan/absensi', [ReportController::class, 'monthlyAttendanceSheet'])->name('reports.attendance');
+    // Route::get('/laporan/absensi', [ReportController::class, 'monthlyAttendanceSheet'])->name('reports.attendance');
     Route::get('/billing-statement/{nis}', [BillingStatementController::class, 'download'])->name('billing.statement');
     Route::get('/dokumen/{type}/{nis}', [StudentDocumentController::class, 'download'])->name('documents.download');
     Route::get('/setting', Setelan::class)->name('setelan');
-    Route::post('/logout', function () {
-        Auth::logout();
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
-
-        return redirect('/');
-    })->name('logout');
+    
 });
 Route::middleware(['auth', 'akses:guru'])->group(function () {
     Route::get('/sensei/dashboard', Home::class)->name('home');
@@ -59,3 +53,11 @@ Route::middleware(['auth', 'akses:dev'])->group(function () {
         dd('berhasil dev');
     });
 });
+
+Route::post('/logout', function () {
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect('/');
+    })->name('logout');     

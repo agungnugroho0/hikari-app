@@ -16,3 +16,25 @@
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji";
 }
+
+.custom-toast {
+    position: absolute;
+    overflow: hidden;
+    font-size: 16px;
+    color: #350c0c;
+}
+
+.custom-toast .toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: rgba(255,255,255,0.4);
+    animation: toast-progress 3s linear forwards;
+}
+
+@keyframes toast-progress {
+    from { width: 100%; }
+    to { width: 0%; }
+}

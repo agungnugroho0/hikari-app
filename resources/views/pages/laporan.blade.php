@@ -44,10 +44,10 @@
                         class="inline-flex items-center justify-center rounded bg-red-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800">
                         Cetak Formulir Nilai
                     </a>
-                    <a href="{{ route('reports.attendance', ['year' => $year, 'month' => $month, 'class_id' => $selectedClassId]) }}"
+                    {{-- <a href="{{ route('reports.attendance', ['year' => $year, 'month' => $month, 'class_id' => $selectedClassId]) }}"
                         class="inline-flex items-center justify-center rounded bg-emerald-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600">
                         Export Absensi Excel
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
             <p class="mt-2 text-3xl font-bold text-neutral-900">{{ $this->totalGraduationChart['year_total'] }}</p>
         </div>
         <div class="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm">
-            <p class="text-sm text-neutral-500">Bulan aktif</p>
+            <p class="text-sm text-neutral-500">Bulan </p>
             <p class="mt-2 text-3xl font-bold text-neutral-900">
                 {{ now()->startOfYear()->month($month)->translatedFormat('F') }}
             </p>
@@ -74,9 +74,9 @@
         @foreach ($this->attendanceChart['recap'] as $attendanceRecap)
             <article class="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm">
                 <p class="text-sm text-neutral-500">{{ $attendanceRecap['label'] }}</p>
-                <p class="mt-2 text-3xl font-bold text-neutral-900">{{ $attendanceRecap['total'] }}</p>
+                <p class="mt-2 text-3xl font-bold text-neutral-900">{{ number_format($attendanceRecap['percentage'], 1) }}%</p>
                 <div class="mt-3 h-2 rounded-full" style="background: {{ $attendanceRecap['background'] }}">
-                    <div class="h-2 rounded-full" style="width: 100%; background: {{ $attendanceRecap['color'] }}"></div>
+                    <div class="h-2 rounded-full" style="width: {{ min(100, $attendanceRecap['percentage']) }}%; background: {{ $attendanceRecap['color'] }}"></div>
                 </div>
             </article>
         @endforeach
@@ -138,6 +138,7 @@
                 <div class="mb-4">
                     {{-- <h3 class="font-semibold text-neutral-900">{{ $this->attendanceChart['class_name'] }}</h3> --}}
                     <p class="font-semibold text-neutral-900">Rekap Absensi Harian</p>
+                    <p class="text-sm text-neutral-500">Jumlah siswa per status setiap hari.</p>
                 </div>
 
                 <div class="h-72" wire:ignore>
@@ -148,7 +149,7 @@
             <article class=" border-neutral-200 bg-neutral-50 p-4">
                 <div class="mb-4">
                     <h3 class="font-semibold text-neutral-900">Rekap Bulanan</h3>
-                    {{-- <p class="text-sm text-neutral-500">Total setiap status untuk kelas terpilih.</p> --}}
+                    <p class="text-sm text-neutral-500">Persentase status selama 1 bulan dari total siswa kelas.</p>
                 </div>
 
                 <div class="h-72" wire:ignore>

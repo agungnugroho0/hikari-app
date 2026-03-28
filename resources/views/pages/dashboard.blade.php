@@ -35,8 +35,8 @@
         <article class="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
             <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                    <h2 class="text-lg font-semibold text-neutral-900">Grafik Rekapan Tahunan</h2>
-                    <p class="text-sm text-neutral-500">Jumlah lulusan per bulan selama {{ $year }}.</p>
+                    <h2 class="text-lg font-semibold text-neutral-900">Grafik Rekapan Kelolosan</h2>
+                    <p class="text-sm text-neutral-500">Jumlah siswa lolos per bulan selama {{ $year }}.</p>
                 </div>
                 <div class="text-sm text-neutral-600">
                     <p>Bulan aktif: <span class="font-semibold text-neutral-900">{{ $this->yearlyGraduationChart['active_months'] }}</span></p>
