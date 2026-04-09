@@ -22,6 +22,8 @@
     <div>
         <h1 class="text-2xl font-bold text-neutral-900 mb-2">Settings</h1>
     </div>
+    <livewire:forms.pengaturan-profil />
+    <livewire:form.kelas-saat-ini />
     <livewire:form.ukk />
     <livewire:form.nafuda />
     <livewire:form.nafuda2 />

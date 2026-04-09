@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('nis')->references('nis')->on('core')->cascadeOnUpdate();
             $table->string('id_t');
             $table->foreign('id_t')->references('id_t')->on('tagihan')->cascadeOnDelete();
-            $table->string('nama_lengkap');
+            $table->string('nama_lengkap')->nullable();
             $table->date('tgl_transaksi');
             $table->string('nama_transaksi');
             $table->integer('nominal');

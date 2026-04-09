@@ -17,8 +17,33 @@ class Kelas extends Model
 
     protected $primaryKey = 'id_kelas';
 
-    public $incrementing = false; // atau false kalau bukan auto increment
-    // protected $keyType = 'string';  // atau string kalau UUID
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $kelas): void {
+            if (blank($kelas->id_kelas)) {
+                $kelas->id_kelas = static::generatePrefixedId('KLS', static::class, 'id_kelas');
+            }
+        });
+    }
+
+    protected static function generatePrefixedId(string $prefix, string $modelClass, string $column): string
+    {
+        $latest = $modelClass::query()
+            ->where($column, 'like', $prefix.'%')
+            ->orderBy($column, 'desc')
+            ->lockForUpdate()
+            ->first();
+
+        $nextNumber = $latest
+            ? ((int) substr($latest->{$column}, strlen($prefix))) + 1
+            : 1;
+
+        return $prefix.str_pad((string) $nextNumber, 3, '0', STR_PAD_LEFT);
+    }
 
     public function core()
     {

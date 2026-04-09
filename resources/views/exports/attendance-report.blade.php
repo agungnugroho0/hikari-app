@@ -3,131 +3,97 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Laporan Absensi {{ $className }} {{ $monthName }} {{ $year }}</title>
+    <title>Presensi {{ $className }} {{ $year }}-{{ str_pad((string) $month, 2, '0', STR_PAD_LEFT) }}</title>
 </head>
 
 <body>
     @php
-        $chartScale = 30;
-        $statusColors = [
-            'hadir' => '#16a34a',
-            'mensetsu' => '#2563eb',
-            'ijin' => '#d97706',
-            'alfa' => '#dc2626',
-        ];
-        $recapTotals = $recap->pluck('total', 'key');
+        $dayColumnCount = count($days);
+        $summaryColumns = 4;
+        $totalColumns = 2 + $dayColumnCount + $summaryColumns;
     @endphp
 
-    <table border="1">
+    <table border="1" cellspacing="0" cellpadding="4">
         <tr>
-            <td colspan="7" style="font-weight: bold; font-size: 16px;">Laporan Absensi Bulanan</td>
+            <td colspan="{{ $totalColumns }}" style="font-weight: bold; font-size: 16px; text-align: center;">
+                REKAP ABSENSI SISWA
+            </td>
         </tr>
         <tr>
-            <td colspan="7">Kelas: {{ $className }}</td>
+            <td colspan="{{ $totalColumns }}">Kelas: {{ $className }}</td>
         </tr>
         <tr>
-            <td colspan="7">Periode: {{ $monthName }} {{ $year }}</td>
+            <td colspan="{{ $totalColumns }}">Periode: {{ $monthName }} {{ $year }}</td>
         </tr>
     </table>
 
     <br>
 
-    <table border="1">
-        <tr>
-            <th colspan="4" style="background-color: #e5e7eb;">Rekapan Absensi</th>
-        </tr>
-        <tr>
-            @foreach ($recap as $item)
-                <th>{{ $item['label'] }}</th>
+    <table border="1" cellspacing="0" cellpadding="4">
+        <thead>
+            <tr style="background-color: #dbeafe; font-weight: bold; text-align: center;">
+                <th rowspan="2">NO</th>
+                <th rowspan="2">NAMA</th>
+                <th colspan="{{ $dayColumnCount }}">TANGGAL</th>
+                <th colspan="{{ $summaryColumns }}">JUMLAH</th>
+            </tr>
+            <tr style="background-color: #eff6ff; text-align: center;">
+                @foreach ($days as $day)
+                    <th>{{ $day }}</th>
+                @endforeach
+                <th>HADIR</th>
+                <th>MENSETSU</th>
+                <th>IZIN</th>
+                <th>ALPHA</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($students as $student)
+                <tr>
+                    <td style="text-align: center;">{{ $loop->iteration }}</td>
+                    <td>{{ $student->nama_lengkap }}</td>
+                    @foreach ($days as $day)
+                        <td style="text-align: center;">{{ $student->daily_statuses[$day] ?? '' }}</td>
+                    @endforeach
+                    <td style="text-align: center;">{{ $student->hadir }}</td>
+                    <td style="text-align: center;">{{ $student->mensetsu }}</td>
+                    <td style="text-align: center;">{{ $student->ijin }}</td>
+                    <td style="text-align: center;">{{ $student->alfa }}</td>
+                </tr>
             @endforeach
-        </tr>
-        <tr>
-            @foreach ($recap as $item)
-                <td>{{ $item['total'] }}</td>
-            @endforeach
-        </tr>
+            <tr style="font-weight: bold; background-color: #f8fafc;">
+                <td colspan="{{ 2 + $dayColumnCount }}" style="text-align: right;">TOTAL</td>
+                <td style="text-align: center;">{{ $recap->firstWhere('key', 'hadir')['total'] ?? 0 }}</td>
+                <td style="text-align: center;">{{ $recap->firstWhere('key', 'mensetsu')['total'] ?? 0 }}</td>
+                <td style="text-align: center;">{{ $recap->firstWhere('key', 'ijin')['total'] ?? 0 }}</td>
+                <td style="text-align: center;">{{ $recap->firstWhere('key', 'alfa')['total'] ?? 0 }}</td>
+            </tr>
+        </tbody>
     </table>
 
     <br>
 
-    <table border="1">
-        <tr>
-            <th colspan="3" style="background-color: #e5e7eb;">Grafik Rekap Absensi</th>
+    <table border="1" cellspacing="0" cellpadding="4">
+        <tr style="background-color: #f1f5f9; font-weight: bold;">
+            <th>Keterangan Kode</th>
+            <th>Arti</th>
         </tr>
         <tr>
-            <th>Status</th>
-            <th>Total</th>
-            <th>Grafik</th>
-        </tr>
-        @foreach ($recap as $item)
-            @php
-                $barLength = $item['total'] > 0 ? max(1, (int) round(($item['total'] / $maxRecapTotal) * $chartScale)) : 0;
-            @endphp
-            <tr>
-                <td>{{ $item['label'] }}</td>
-                <td>{{ $item['total'] }}</td>
-                <td style="color: {{ $statusColors[$item['key']] }};">{{ str_repeat('|', $barLength) }}</td>
-            </tr>
-        @endforeach
-    </table>
-
-    <br>
-
-    <table border="1">
-        <tr>
-            <th colspan="7" style="background-color: #e5e7eb;">Detail Absensi per Siswa</th>
+            <td>H</td>
+            <td>Hadir</td>
         </tr>
         <tr>
-            <th>No</th>
-            <th>NIS</th>
-            <th>Nama Siswa</th>
-            <th>Hadir</th>
-            <th>Mensetsu</th>
-            <th>Ijin</th>
-            <th>Alfa</th>
-        </tr>
-        @foreach ($students as $student)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td style="mso-number-format:'\@';">{{ $student->nis }}</td>
-                <td>{{ $student->nama_lengkap }}</td>
-                <td>{{ $student->hadir }}</td>
-                <td>{{ $student->mensetsu }}</td>
-                <td>{{ $student->ijin }}</td>
-                <td>{{ $student->alfa }}</td>
-            </tr>
-        @endforeach
-        <tr>
-            <th colspan="3">Total</th>
-            <th>{{ $recapTotals['hadir'] ?? 0 }}</th>
-            <th>{{ $recapTotals['mensetsu'] ?? 0 }}</th>
-            <th>{{ $recapTotals['ijin'] ?? 0 }}</th>
-            <th>{{ $recapTotals['alfa'] ?? 0 }}</th>
-        </tr>
-    </table>
-
-    <br>
-
-    <table border="1">
-        <tr>
-            <th colspan="5" style="background-color: #e5e7eb;">Grafik Harian Absensi</th>
+            <td>M</td>
+            <td>Mensetsu</td>
         </tr>
         <tr>
-            <th>Tanggal</th>
-            <th>Hadir</th>
-            <th>Mensetsu</th>
-            <th>Ijin</th>
-            <th>Alfa</th>
+            <td>I</td>
+            <td>Izin</td>
         </tr>
-        @foreach ($dailySeries as $day)
-            <tr>
-                <td>{{ $day['label'] }}</td>
-                <td>{{ $day['hadir'] }}</td>
-                <td>{{ $day['mensetsu'] }}</td>
-                <td>{{ $day['ijin'] }}</td>
-                <td>{{ $day['alfa'] }}</td>
-            </tr>
-        @endforeach
+        <tr>
+            <td>A</td>
+            <td>Alpha</td>
+        </tr>
     </table>
 </body>
 

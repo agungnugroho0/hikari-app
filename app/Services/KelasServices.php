@@ -7,25 +7,10 @@ use Illuminate\Support\Facades\DB;
 
 class KelasServices
 {
-    // public function generateId()
-    // {
-    //     $prefix = 'S'.date('Ymd');
-    //     $terbaru = Kelas::where('id_kelas', 'like', $prefix.'%')->lockForUpdate()->orderBy('id_staff', 'desc')->first();
-
-    //     if ($terbaru) {
-    //         $number = (int) substr($terbaru->id_kelas, -3);
-    //         $number++;
-    //     } else {
-    //         $number = 1;
-    //     }
-
-    //     return $prefix.str_pad($number, 3, '0', STR_PAD_LEFT);
-    // }
-
     public function create(array $data)
     {
         return DB::transaction(function () use ($data) {
-            Kelas::create([
+            return Kelas::create([
                 'nama_kelas' => $data['namakelas'],
                 'tingkat' => $data['tingkat'],
                 'id_pengajar' => $data['pengajar'],
@@ -42,6 +27,8 @@ class KelasServices
                 'tingkat' => $data['tingkat'],
                 'id_pengajar' => $data['pengajar'],
             ]);
+
+            return $kelas;
         });
     }
 

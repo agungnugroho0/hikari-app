@@ -19,7 +19,7 @@
             <span x-text="msg"></span>
         </div>
     </div>
-    <x-loading wire:loading wire:target="mode,muat"></x-loading>
+    <x-loading wire:loading wire:target="mode,muat,resetPassword,deletestaff"></x-loading>
     <div>
             <h1 class="text-2xl font-bold text-neutral-900">Staff</h1>
             {{-- <p class="text-sm text-neutral-600">Grafik kelulusan, grafik absensi per kelas per bulan, dan export laporan.</p> --}}
@@ -48,9 +48,15 @@
                                 class="absolute right-0 mt-2 z-10 bg-white rounded shadow shadow-gray-200 w-40">
                                 <ul class="p-2 text-sm">
                                     <li>
-                                        <div wire:click.stop="mode('edit', {{ $s->id_staff }})"
+                                        <div wire:click.stop="mode('edit', '{{ $s->id_staff }}')"
                                             class="px-2 py-1 hover:bg-gray-100 cursor-pointer">
                                             Edit
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div wire:click.stop="resetPassword('{{ $s->id_staff }}')"
+                                            class="px-2 py-1 hover:bg-gray-100 cursor-pointer text-amber-600">
+                                            Reset Password
                                         </div>
                                     </li>
                                     <li>

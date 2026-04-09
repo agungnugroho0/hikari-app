@@ -1,7 +1,34 @@
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-    <a href="{{ 'siswa' }}" wire:navigate class="rounded border border-red-900 text-center p-2 active:bg-amber-500">Siswa</a>
-    <a href="{{ route('presensi') }}" wire:navigate class="rounded border border-red-900 text-center p-2 active:bg-amber-500">Presensi</a>
-    <a href="#" wire:navigate class="rounded border border-red-900 text-center p-2 active:bg-amber-500">Laporan</a>
-    <a href="#" wire:navigate class="rounded border border-red-900 text-center p-2 active:bg-amber-500">Buat SP1</a>
-    <a href="#" wire:navigate class="rounded border border-red-900 text-center p-2 active:bg-amber-500">Buat SP2</a>
+<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <a href="{{ route('siswa') }}" wire:navigate
+        @class([
+            'rounded-2xl border px-4 py-3 text-center text-sm font-semibold shadow-sm transition',
+            'border-red-200 bg-red-50 text-red-900' => request()->routeIs('siswa'),
+            'border-neutral-200 bg-white text-neutral-700 hover:border-red-200 hover:text-red-900' => !request()->routeIs('siswa'),
+        ])>
+        Siswa
+    </a>
+    <a href="{{ route('presensi') }}" wire:navigate
+        @class([
+            'rounded-2xl border px-4 py-3 text-center text-sm font-semibold shadow-sm transition',
+            'border-red-200 bg-red-50 text-red-900' => request()->routeIs('presensi'),
+            'border-neutral-200 bg-white text-neutral-700 hover:border-red-200 hover:text-red-900' => !request()->routeIs('presensi'),
+        ])>
+        Presensi
+    </a>
+    <a href="{{ route('sensei.laporan') }}" wire:navigate
+        @class([
+            'rounded-2xl border px-4 py-3 text-center text-sm font-semibold shadow-sm transition',
+            'border-red-200 bg-red-50 text-red-900' => request()->routeIs('sensei.laporan'),
+            'border-neutral-200 bg-white text-neutral-700 hover:border-red-200 hover:text-red-900' => !request()->routeIs('sensei.laporan'),
+        ])>
+        Laporan
+    </a>
+    <a href="{{ route('sensei.profil') }}" wire:navigate
+        @class([
+            'rounded-2xl border px-4 py-3 text-center text-sm font-semibold shadow-sm transition',
+            'border-red-200 bg-red-50 text-red-900' => request()->routeIs('sensei.profil'),
+            'border-neutral-200 bg-white text-neutral-700 hover:border-red-200 hover:text-red-900' => !request()->routeIs('sensei.profil'),
+        ])>
+        Profil
+    </a>
 </div>

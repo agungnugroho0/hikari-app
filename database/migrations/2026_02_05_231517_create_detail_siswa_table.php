@@ -17,12 +17,13 @@ return new class extends Migration
             $table->string('nama_lengkap');
             $table->string('panggilan');
             $table->date('tgl_lahir');
-            $table->enum('gender',['L','P']);
-            $table->string('tempat_lhr','100');
+            $table->enum('gender', ['L', 'P']);
+            $table->string('tempat_lhr', '100');
             $table->text('alamat');
             $table->string('wa');
             $table->string('wa_wali')->nullable();
             $table->string('pernikahan');
+            $table->string('agama');
         });
     }
 

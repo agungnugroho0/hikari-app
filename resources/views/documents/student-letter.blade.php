@@ -150,10 +150,10 @@
         }
 
         .signature-logo {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
             position: absolute;
-            top: 5px;
+            top: 0px;
             left: 50%;
             transform: translateX(-50%);
         }
@@ -168,12 +168,19 @@
 <body>
     @php
         $path = public_path('img/logo.jpg');
+        $path2 = public_path('img/stempel.png');
         $logo = null;
+        $stamp = null;
 
         if (file_exists($path)) {
             $type = pathinfo($path, PATHINFO_EXTENSION);
             $data = file_get_contents($path);
             $logo = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        }
+        if (file_exists($path2)) {
+            $type = pathinfo($path2, PATHINFO_EXTENSION);
+            $data = file_get_contents($path2);
+            $stamp = 'data:image/' . $type . ';base64,' . base64_encode($data);
         }
     @endphp
 
@@ -285,9 +292,9 @@
             @foreach ($signatures as $signature)
                 <td class="signature-space">
                     @if (($signature['use_logo'] ?? false) && $logo)
-                        <img src="{{ $logo }}" alt="Logo LPK" class="signature-logo">
+                        <img src="{{ $stamp }}" alt="Logo LPK" class="signature-logo">
                     @elseif (($document['stamp_on'] ?? null) === $signature['label'] && $logo)
-                        <img src="{{ $logo }}" alt="Stempel LPK" class="stamp">
+                        <img src="{{ $stamp }}" alt="Stempel LPK" class="stamp">
                     @endif
                 </td>
             @endforeach

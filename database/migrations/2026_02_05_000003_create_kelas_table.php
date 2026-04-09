@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('kelas');
+
         Schema::create('kelas', function (Blueprint $table) {
-            $table->unsignedInteger('id_kelas', true);
+            $table->string('id_kelas', 20)->primary();
             $table->string('nama_kelas');
-            $table->integer('tingkat');
-            $table->string('id_pengajar')->nullable();
-            $table->foreign('id_pengajar')->references('id_staff')->on('staff');
+            $table->integer('tingkat')->nullable();
+            $table->string('id_pengajar', 20)->nullable();
+            $table->foreign('id_pengajar')->references('id_staff')->on('staff')->nullOnDelete();
         });
     }
 

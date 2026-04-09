@@ -1,14 +1,93 @@
-<div>
-    <x-kembali wire:navigate href="{{ route('home') }}"></x-kembali>
-    @foreach ( $siswa->kelas->core as $s )
-        <div class="bg-gray-50 m-1 p-3 flex border-b ">
-           <p class="grow"> {{ $s->detail->nama_lengkap }} </p>
-           <a href="https://wa.me/{{ optional($siswa->detail)->wa }}"
-                            class="w-5">
-                            <svg fill="#000000" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M11.42 9.49c-.19-.09-1.1-.54-1.27-.61s-.29-.09-.42.1-.48.6-.59.73-.21.14-.4 0a5.13 5.13 0 0 1-1.49-.92 5.25 5.25 0 0 1-1-1.29c-.11-.18 0-.28.08-.38s.18-.21.28-.32a1.39 1.39 0 0 0 .18-.31.38.38 0 0 0 0-.33c0-.09-.42-1-.58-1.37s-.3-.32-.41-.32h-.4a.72.72 0 0 0-.5.23 2.1 2.1 0 0 0-.65 1.55A3.59 3.59 0 0 0 5 8.2 8.32 8.32 0 0 0 8.19 11c.44.19.78.3 1.05.39a2.53 2.53 0 0 0 1.17.07 1.93 1.93 0 0 0 1.26-.88 1.67 1.67 0 0 0 .11-.88c-.05-.07-.17-.12-.36-.21z"/>
-                                <path d="M13.29 2.68A7.36 7.36 0 0 0 8 .5a7.44 7.44 0 0 0-6.41 11.15l-1 3.85 3.94-1a7.4 7.4 0 0 0 3.55.9H8a7.44 7.44 0 0 0 5.29-12.72zM8 14.12a6.12 6.12 0 0 1-3.15-.87l-.22-.13-2.34.61.62-2.28-.14-.23a6.18 6.18 0 0 1 9.6-7.65 6.12 6.12 0 0 1 1.81 4.37A6.19 6.19 0 0 1 8 14.12z"/></svg>
-                        </a>
+<div class="space-y-4 sm:space-y-5"
+    x-on:kirim.window="
+        if (window.showToast) {
+            window.showToast($event.detail.message, $event.detail.type ?? 'success');
+        }
+    ">
+    <x-dashboard-header
+        :foto="$foto"
+        :nama="$nama"
+        :kelas="$sensei?->kelas?->nama_kelas"
+    />
+
+    <x-menu-bar />
+
+    <section class="grid gap-3 sm:grid-cols-3">
+        <x-stat-card
+            title="Kelas"
+            :value="$sensei?->kelas?->nama_kelas ?? '-'"
+            description="Kelas aktif yang sedang Anda ampu"
+        />
+
+        <x-stat-card
+            title="Total Siswa"
+            :value="$siswa->kelas->core->count()"
+            description="Daftar siswa aktif di kelas ini"
+        />
+
+    </section>
+
+    <section class="rounded-[28px] border border-neutral-200 bg-white p-4 shadow-sm sm:p-5">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-red-900/70">Daftar Siswa</p>
+                <h2 class="mt-1 text-lg font-semibold text-neutral-900">Siswa di kelas {{ $sensei?->kelas?->nama_kelas ?? '-' }}</h2>
+                <p class="mt-1 text-sm text-neutral-500">Tampilan daftar siswa dibuat lebih ringkas agar konsisten dengan dashboard guru.</p>
+            </div>
+
+            <a href="{{ route('home') }}" wire:navigate
+                class="inline-flex min-h-11 items-center justify-center rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-100">
+                Kembali ke Dashboard
+            </a>
         </div>
-    @endforeach
+
+        <div class="mt-5 grid gap-3">
+            @forelse ($siswa->kelas->core as $student)
+                <article class="flex flex-col gap-3 rounded-3xl border border-neutral-200 bg-neutral-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="min-w-0">
+                        <p class="text-base font-semibold text-neutral-900">
+                            {{ $student->detail->nama_lengkap ?? $student->nis }}
+                        </p>
+                        <div class="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutral-500">
+                            <span>NIS {{ $student->nis }}</span>
+                            <span>{{ $student->detail->panggilan ?? 'Tanpa panggilan' }}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2">
+                        @if ($canPromoteStudents)
+                            <button type="button"
+                                wire:click="naikKelas('{{ $student->nis }}')"
+                                wire:loading.attr="disabled"
+                                wire:target="naikKelas('{{ $student->nis }}')"
+                                class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-700 text-lg font-bold text-white transition hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300"
+                                title="Naik kelas"
+                                aria-label="Naik kelas {{ $student->detail->nama_lengkap ?? $student->nis }}">
+                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M12 19V5M12 5l-5 5M12 5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        @endif
+
+                        @if (optional($student->detail)->wa)
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', optional($student->detail)->wa) }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex min-h-11 items-center justify-center rounded-2xl bg-green-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-600">
+                                Hubungi Siswa
+                            </a>
+                        @else
+                            <span class="inline-flex min-h-11 items-center justify-center rounded-2xl bg-neutral-200 px-4 py-2 text-sm font-semibold text-neutral-500">
+                                Nomor belum tersedia
+                            </span>
+                        @endif
+                    </div>
+                </article>
+            @empty
+                <div class="flex min-h-48 items-center justify-center rounded-3xl bg-neutral-50 p-6 text-center text-sm text-neutral-500">
+                    Belum ada siswa aktif yang terdaftar di kelas ini.
+                </div>
+            @endforelse
+        </div>
+    </section>
 </div>

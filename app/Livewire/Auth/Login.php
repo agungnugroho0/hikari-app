@@ -2,14 +2,12 @@
 
 namespace App\Livewire\Auth;
 
+use App\Models\Staff;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-
+use Illuminate\Support\Facades\Hash;
 
 class Login extends Component
-// class Login extends Authenticatable
 {
     public $username;
     public $password;
@@ -40,6 +38,14 @@ class Login extends Component
 
             // ini digunakan untuk multiuser
             $user = Auth::user();
+
+            if ($user instanceof Staff && Hash::check('123456', $user->password)) {
+                return match ($user->akses) {
+                    'admin' => redirect()->route('setelan'),
+                    'guru' => redirect()->route('sensei.profil'),
+                    default => redirect()->to('/dev/dashboard'),
+                };
+            }
 
             return match ($user->akses) {
                 'admin' => redirect()->to('/dashboard'),

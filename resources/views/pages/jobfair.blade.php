@@ -22,7 +22,7 @@
                 }
             }, 220);
         }
-    }"
+     }"
         x-on:tutupforms.window="
             msg = $event.detail.message ?? '';
             if (msg) {
@@ -69,11 +69,44 @@
         </button>
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-3 flex-wrap justify-evenly">
             @foreach ($so as $item)
-                <div class="rounded shadow " x-data="{ open: false }">
-                    <h3 class="md:hidden xl:block bg-gray-100 p-1 font-bold">{{ $item->nama_so }}</h3>
+                <div class="rounded shadow " x-data="{ open: false, borderColor: '#d1d5db' }">
+                    <div class="bg-gray-100 flex gap-3">
+                    @if ($item->foto_so != null)
+                    <img src="{{asset('storage/'.$item->foto_so)}}" alt="" class="max-w-10 object-cover"
+                        @load="
+                            {{-- // Ambil warna rata-rata dari foto, lalu pakai untuk garis bawah --}}
+                            let c = document.createElement('canvas'),
+                                x = c.getContext('2d'),
+                                s = 20,
+                                r = 0,
+                                g = 0,
+                                b = 0,
+                                n = 0;
+
+                            if (!x) return;
+
+                            c.width = s;
+                            c.height = s;
+                            x.drawImage($event.target, 0, 0, s, s);
+
+                            let data = x.getImageData(0, 0, s, s).data;
+
+                            for (let i = 0; i < data.length; i += 4) {
+                                r += data[i];
+                                g += data[i + 1];
+                                b += data[i + 2];
+                                n++;
+                            }
+
+                            borderColor = `rgb(${Math.round(r / n)}, ${Math.round(g / n)}, ${Math.round(b / n)})`;
+                        ">
+                    @endif
+                    <h3 class="md:hidden xl:block  p-1 font-bold">{{ $item->nama_so }}</h3>
+                    </div>
+                    {{-- Garis bawah ini akan mengikuti warna foto_so --}}
+                    <div class="h-0.5 w-full" :style="`background-color: ${borderColor}`"></div>
                     <div class="xl:hidden flex items-center justify-between p-3 cursor-pointer" @click="open = !open">
                         <span>{{ $item->nama_so }}</span>
-
                         <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-width="2" d="M19 9l-7 7-7-7" />

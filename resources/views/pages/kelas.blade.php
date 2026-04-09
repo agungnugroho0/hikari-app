@@ -42,7 +42,7 @@
                                 class="absolute right-0 mt-2 z-10 bg-white rounded shadow shadow-gray-200 w-40">
                                 <ul class="p-2 text-sm">
                                     <li>
-                                        <div wire:click.stop="mode('edit', {{ $k->id_kelas }})"
+                                        <div wire:click.stop="mode('edit', '{{ $k->id_kelas }}')"
                                             class="px-2 py-1 hover:bg-gray-100 cursor-pointer">
                                             Edit
                                         </div>

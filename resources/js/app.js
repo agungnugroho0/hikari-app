@@ -1,4 +1,5 @@
 import "./bootstrap";
+import "./home";
 import "flowbite";
 import Toastify from "toastify-js";
 import { Html5Qrcode } from "html5-qrcode";
@@ -10,6 +11,8 @@ let html5QrCode = null;
 let isScanning = false;
 let toastListenerBound = false;
 let reportListenerBound = false;
+let jqueryLoader = null;
+let select2Loader = null;
 
 function initScanner() {
     const startBtn = document.getElementById("start-btn");
@@ -342,10 +345,103 @@ function bindReportChartsCommand() {
     reportListenerBound = true;
 }
 
+function ensureScript(src, key) {
+    return new Promise((resolve, reject) => {
+        const existingScript = document.querySelector(`script[${key}="true"]`);
+
+        if (existingScript) {
+            if (existingScript.dataset.loaded === "true") {
+                resolve();
+                return;
+            }
+
+            existingScript.addEventListener("load", () => resolve(), { once: true });
+            existingScript.addEventListener("error", reject, { once: true });
+            return;
+        }
+
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.setAttribute(key, "true");
+        script.onload = () => {
+            script.dataset.loaded = "true";
+            resolve();
+        };
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
+window.ensureJquery = (() => {
+    return () => {
+        if (window.jQuery) return Promise.resolve(window.jQuery);
+        if (jqueryLoader) return jqueryLoader;
+
+        jqueryLoader = ensureScript("https://code.jquery.com/jquery-3.7.1.min.js", "data-jquery-loader")
+            .then(() => window.jQuery);
+
+        return jqueryLoader;
+    };
+})();
+
+window.ensureSelect2 = (() => {
+    return () => {
+        if (window.jQuery?.fn?.select2) return Promise.resolve(window.jQuery.fn.select2);
+        if (select2Loader) return select2Loader;
+
+        select2Loader = window.ensureJquery()
+            .then(() => ensureScript("https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js", "data-select2-loader"))
+            .then(() => window.jQuery.fn.select2);
+
+        return select2Loader;
+    };
+})();
+
+window.initStudentSelect2 = async function initStudentSelect2() {
+    const select = document.getElementById("student-select");
+
+    if (!select || !window.Livewire) {
+        return;
+    }
+
+    try {
+        await window.ensureSelect2();
+    } catch (error) {
+        console.error("Select2 failed to load", error);
+        return;
+    }
+
+    const $select = window.jQuery(select);
+    const componentElement = select.closest('[wire\\:id]');
+    const componentId = componentElement ? componentElement.getAttribute("wire:id") : null;
+    const component = componentId ? window.Livewire.find(componentId) : null;
+
+    if (!component) {
+        return;
+    }
+
+    if ($select.hasClass("select2-hidden-accessible")) {
+        $select.off(".student-documents");
+        $select.select2("destroy");
+    }
+
+    $select.select2({
+        placeholder: "Cari siswa berdasarkan NIS atau nama",
+        width: "100%",
+    });
+
+    $select.val(select.dataset.selectedNis || "").trigger("change.select2");
+    $select.on("change.student-documents", function () {
+        component.set("selectedNis", this.value);
+    });
+};
+
 function bootFrontendCommands() {
     initScanner();
     bindToastCommand();
     bindReportChartsCommand();
+    window.initStudentSelect2();
 }
 
 document.addEventListener("DOMContentLoaded", bootFrontendCommands);

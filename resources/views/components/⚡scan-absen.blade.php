@@ -34,20 +34,21 @@ new class extends Component
 };
 ?>
 <div>
-    <div class="flex justify-center mb-3">
-         <div class="flex gap-2">
-            <button id="start-btn" 
-                class="px-4 py-2 bg-green-600 text-white rounded">
+    <div class="mb-4 flex justify-center">
+         <div class="flex flex-wrap justify-center gap-2">
+            <button id="start-btn"
+                class="inline-flex min-h-11 items-center justify-center rounded-2xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600">
                 Mulai Scan
             </button>
-    
-            <button id="stop-btn" 
-                class="px-4 py-2 bg-red-600 text-white rounded">
+
+            <button id="stop-btn"
+                class="inline-flex min-h-11 items-center justify-center rounded-2xl bg-red-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800">
                 Stop Scan
             </button>
         </div>
     </div>
-    <div class="flex justify-center mb-3">
-        <div id="reader" class="w-80 "></div>
+
+    <div class="flex justify-center">
+        <div id="reader" class="w-full max-w-sm overflow-hidden rounded-[28px] border border-neutral-200 bg-white p-3 shadow-sm"></div>
     </div>
 </div>

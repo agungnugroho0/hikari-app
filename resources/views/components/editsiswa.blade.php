@@ -96,9 +96,40 @@ new class extends Component {
             </div>
         </div>
         <br>
-        <label for="alamat" class="text-normal font-medium text-gray-600 pl-2">Alamat</label><br>
-        <input id="alamat" type="text" wire:model="form.alamat" class="w-full border-slate-400 rounded mt-1 my-2">
-        <div class="grid gap-2 md:grid-cols-3">
+        <label class="text-normal font-medium text-gray-600 pl-2">Alamat</label><br>
+        <div class="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+            <div>
+                <label for="alamat_desa" class="text-normal font-medium text-gray-600 pl-2">Desa</label><br>
+                <input id="alamat_desa" type="text" wire:model="form.alamat_desa"
+                    class="w-full border-slate-400 rounded mt-1 my-2">
+            </div>
+            <div>
+                <label for="alamat_rt" class="text-normal font-medium text-gray-600 pl-2">RT</label><br>
+                <input id="alamat_rt" type="number" wire:model="form.alamat_rt"
+                    class="w-full border-slate-400 rounded mt-1 my-2">
+            </div>
+            <div>
+                <label for="alamat_rw" class="text-normal font-medium text-gray-600 pl-2">RW</label><br>
+                <input id="alamat_rw" type="number" wire:model="form.alamat_rw"
+                    class="w-full border-slate-400 rounded mt-1 my-2">
+            </div>
+            <div>
+                <label for="alamat_kecamatan" class="text-normal font-medium text-gray-600 pl-2">Kecamatan</label><br>
+                <input id="alamat_kecamatan" type="text" wire:model="form.alamat_kecamatan"
+                    class="w-full border-slate-400 rounded mt-1 my-2">
+            </div>
+            <div>
+                <label for="alamat_kabupaten" class="text-normal font-medium text-gray-600 pl-2">Kabupaten</label><br>
+                <input id="alamat_kabupaten" type="text" wire:model="form.alamat_kabupaten"
+                    class="w-full border-slate-400 rounded mt-1 my-2">
+            </div>
+            <div>
+                <label for="alamat_provinsi" class="text-normal font-medium text-gray-600 pl-2">Provinsi</label><br>
+                <input id="alamat_provinsi" type="text" wire:model="form.alamat_provinsi"
+                    class="w-full border-slate-400 rounded mt-1 my-2">
+            </div>
+        </div>
+        <div class="grid gap-2 md:grid-cols-4">
             <div>
                 <label for="wa" class="text-normal font-medium text-gray-600 pl-2">No Whatsapp</label><br>
                 <input id="wa" type="text" wire:model="form.wa"
@@ -117,6 +148,11 @@ new class extends Component {
                     <option value="menikah">Menikah</option>
                     <option value="cerai">Cerai</option>
                 </select>
+            </div>
+            <div>
+                <label for="agama" class="text-normal font-medium text-gray-600 pl-2">Agama</label><br>
+                <input id="agama" type="text" wire:model="form.agama"
+                    class="w-full border-slate-400 rounded mt-1 my-2">
             </div>
         </div>
         <button wire:submit

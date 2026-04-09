@@ -1,7 +1,7 @@
 <div wire:key="report-charts-{{ $year }}-{{ $month }}-{{ $selectedClassId }}" class="space-y-6">
     <x-loading wire:loading wire:target="year,month,selectedClassId"></x-loading>
 
-    <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+    <div class="flex flex-col gap-3 lg:flex-row lg:justify-between">
         <div>
             <h1 class="text-2xl font-bold text-neutral-900">Laporan</h1>
             <p class="text-sm text-neutral-600">Grafik kelulusan, grafik absensi per kelas per bulan, dan export laporan.</p>
@@ -44,10 +44,10 @@
                         class="inline-flex items-center justify-center rounded bg-red-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800">
                         Cetak Formulir Nilai
                     </a>
-                    {{-- <a href="{{ route('reports.attendance', ['year' => $year, 'month' => $month, 'class_id' => $selectedClassId]) }}"
+                    <a href="{{ route('reports.attendance', ['year' => $year, 'month' => $month, 'class_id' => $selectedClassId]) }}"
                         class="inline-flex items-center justify-center rounded bg-emerald-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600">
                         Export Absensi Excel
-                    </a> --}}
+                    </a>
                 </div>
             </div>
         </div>
@@ -149,7 +149,7 @@
             <article class=" border-neutral-200 bg-neutral-50 p-4">
                 <div class="mb-4">
                     <h3 class="font-semibold text-neutral-900">Rekap Bulanan</h3>
-                    <p class="text-sm text-neutral-500">Persentase status selama 1 bulan dari total siswa kelas.</p>
+                    <p class="text-sm text-neutral-500">Persentase status selama 1 bulan dari total catatan absensi yang tercatat.</p>
                 </div>
 
                 <div class="h-72" wire:ignore>

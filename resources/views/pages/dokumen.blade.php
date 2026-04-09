@@ -90,6 +90,7 @@
                         ['type' => 'sp2', 'label' => 'Buat SP2', 'class' => 'bg-red-900 hover:bg-red-800'],
                         ['type' => 'sp3', 'label' => 'Buat SP3', 'class' => 'bg-red-900 hover:bg-red-800'],
                         ['type' => 'cuti', 'label' => 'Surat Cuti', 'class' => 'bg-red-900 hover:bg-red-800'],
+                        ['type' => 'rekomendasi-paspor', 'label' => 'Rekom Paspor', 'class' => 'bg-red-900 hover:bg-red-800'],
                     ] as $document)
                         @if ($selectedNis)
                             <a href="{{ route('documents.download', ['type' => $document['type'], 'nis' => $selectedNis]) }}"
@@ -127,49 +128,3 @@
         </article>
     </section>
 </div>
-
-@push('scripts')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script>
-        window.initStudentSelect2 = window.initStudentSelect2 || function initStudentSelect2() {
-            const select = document.getElementById('student-select');
-
-            if (!select || !window.jQuery || !window.Livewire) {
-                return;
-            }
-
-            const $select = window.jQuery(select);
-            const componentElement = select.closest('[wire\\:id]');
-            const componentId = componentElement ? componentElement.getAttribute('wire:id') : null;
-            const component = componentId ? window.Livewire.find(componentId) : null;
-
-            if (!component) {
-                return;
-            }
-
-            if ($select.hasClass('select2-hidden-accessible')) {
-                $select.off('change.student-documents');
-                $select.select2('destroy');
-            }
-
-            $select.select2({
-                placeholder: 'Cari siswa berdasarkan NIS atau nama',
-                width: '100%',
-            });
-
-            $select.val(select.dataset.selectedNis || '').trigger('change.select2');
-            $select.on('change.student-documents', function () {
-                component.set('selectedNis', this.value);
-            });
-        };
-
-        document.addEventListener('livewire:initialized', () => {
-            window.initStudentSelect2();
-        });
-
-        document.addEventListener('livewire:navigated', () => {
-            window.initStudentSelect2();
-        });
-    </script>
-@endpush

@@ -15,9 +15,11 @@
 </head>
 
 <body>
-    <div class="p-4 border-default sm:mx-90">
-        {{ $slot }}
-    </div>
+    <main class="min-h-screen bg-neutral-100">
+        <div class="mx-auto w-full max-w-6xl px-3 py-4 sm:px-4 sm:py-6 lg:px-6">
+            {{ $slot }}
+        </div>
+    </main>
     @livewireScripts
     @stack('scripts')
     {{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script> --}}

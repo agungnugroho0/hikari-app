@@ -55,6 +55,20 @@ class SettingsServices
         });
     }
 
+    public function updateKelasSaatIni(array $data)
+    {
+        return DB::transaction(function () use ($data) {
+            $setting = Settings::findOrFail($data['id_st']);
+
+            $setting->update([
+                'nama_set' => $data['nama_set'],
+                'ket' => $data['ket'],
+            ]);
+
+            return $setting;
+        });
+    }
+
     // public function updatenfd2(array $data)
     // {
     //     return DB::transaction(function () use ($data) {

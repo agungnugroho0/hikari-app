@@ -1,0 +1,47 @@
+.sensei-student-select-wrap .select2-container {
+    width: 100% !important;
+}
+
+.sensei-student-select-wrap .select2-container .select2-selection--single {
+    height: 48px !important;
+    min-height: 48px !important;
+    border: 1px solid rgb(212 212 216);
+    border-radius: 1rem;
+    background: rgb(255 255 255);
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.sensei-student-select-wrap .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: rgb(23 23 23);
+    line-height: 48px !important;
+    padding-left: 1rem !important;
+    padding-right: 2.75rem !important;
+    margin: 0 !important;
+    font-size: 0.875rem;
+}
+
+.sensei-student-select-wrap .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 48px !important;
+    width: 1rem !important;
+    right: 1rem !important;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.sensei-student-select-wrap .select2-container--default .select2-selection--single .select2-selection__arrow b {
+    margin-top: 0;
+}
+
+.sensei-student-select-wrap .select2-dropdown {
+    border: 1px solid rgb(212 212 216);
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.sensei-student-select-wrap .select2-search--dropdown .select2-search__field {
+    border: 1px solid rgb(212 212 216);
+    border-radius: 0.75rem;
+    padding: 0.5rem 0.75rem;
+}

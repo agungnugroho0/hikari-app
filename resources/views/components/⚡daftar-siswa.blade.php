@@ -27,8 +27,14 @@ new class extends Component {
     public function Siswa()
     {
         $query = Core::query()
-            ->with(['detail', 'list_w'])
+            ->with(['detail', 'list_w', 'listlolos'])
             ->where('status', '!=', 'dihapus');
+
+        if ($this->idKelas) {
+            $query->where('id_kelas', $this->idKelas);
+        }
+
+        $query->where('status', '=', $this->status);
 
         if (!empty($this->search)) {
             $query->where(function ($q) {
@@ -36,14 +42,33 @@ new class extends Component {
                     $sub->where('nama_lengkap', 'like', "%{$this->search}%");
                 });
             });
-        } else {
-            if ($this->idKelas) {
-                $query->where('id_kelas', (int) $this->idKelas);
-            }
-            $query->where('status', '=', $this->status);
         }
 
-        return $query->latest()->paginate(25);
+        if ($this->status === 'siswa') {
+            $query
+                ->orderBy(
+                    \App\Models\DetailSiswa::select('gender')
+                        ->whereColumn('detail_siswa.nis', 'core.nis')
+                        ->limit(1)
+                )
+                ->orderBy(
+                    \App\Models\DetailSiswa::select('nama_lengkap')
+                        ->whereColumn('detail_siswa.nis', 'core.nis')
+                        ->limit(1)
+                );
+        } elseif ($this->status === 'lolos') {
+            $query
+                ->orderByDesc(
+                    \App\Models\ListLolos::select('tgl_lolos')
+                        ->whereColumn('list_lolos.nis', 'core.nis')
+                        ->limit(1)
+                )
+                ->orderBy('core.nis');
+        } else {
+            $query->latest();
+        }
+
+        return $query->paginate(25);
     }
 
     #[On('siswa-updated')]
@@ -155,6 +180,6 @@ new class extends Component {
     </div>
 
     <div class="border-t border-neutral-200 py-2">
-        {{ $this->siswa->links() }}
+        {{ $this->siswa->links('components.pagination.student-list') }}
     </div>
 </div>

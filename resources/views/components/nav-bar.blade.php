@@ -66,6 +66,12 @@
                 </li>
                 
                 <li>
+                    <a href="{{ 'finance' }}" wire:navigate
+                        class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
+                        <span class="ms-3">Finance</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ 'dokumen' }}" wire:navigate
                         class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
                         <span class="ms-3">Dokumen</span>

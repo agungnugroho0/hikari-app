@@ -15,8 +15,9 @@ return new class extends Migration
             $table->string('id_so')->primary();
             $table->string('nama_so');
             $table->string('foto_so');
-            $table->string('lokasi');
-            $table->string('pj');
+            $table->string('lokasi')->nullable();
+            $table->string('pj')->nullable();
+            $table->string('ket');
         });
     }
 
@@ -25,6 +26,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('transaksi');
+        Schema::dropIfExists('tagihan');
+        Schema::dropIfExists('list_wawancara');
+        Schema::dropIfExists('list_lolos');
+        Schema::dropIfExists('job_fair');
         Schema::dropIfExists('so');
     }
 };
