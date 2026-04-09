@@ -5,11 +5,16 @@ namespace App\Services;
 use App\Models\Core;
 use App\Models\DetailSiswa;
 use App\Models\Settings;
+use App\Models\Tagihan;
+use App\Models\Transaksi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SiswaServices
 {
+    protected const PRA_MCU_AMOUNT = 500000;
+
     public function createPublic(array $data): string
     {
         return DB::transaction(function () use ($data) {
@@ -19,7 +24,7 @@ class SiswaServices
                 'nis' => $nis,
                 'id_kelas' => $data['id_kelas'],
                 'status' => 'siswa',
-                'foto' => null,
+                'foto' => $data['foto'] ?? null,
             ]);
 
             DetailSiswa::query()->create([
@@ -34,6 +39,28 @@ class SiswaServices
                 'wa_wali' => $data['wa_wali'] ?: null,
                 'pernikahan' => $data['pernikahan'],
                 'agama' => $data['agama'],
+            ]);
+
+            $tagihanId = $this->generateTagihanId();
+            Tagihan::query()->create([
+                'id_t' => $tagihanId,
+                'nis' => $nis,
+                'id_so' => null,
+                'tgl_terbit' => now()->toDateString(),
+                'nama_tagihan' => 'pra-MCU',
+                'kekurangan_tagihan' => 0,
+                'total_tagihan' => self::PRA_MCU_AMOUNT,
+                'status_tagihan' => 'lunas',
+            ]);
+
+            Transaksi::query()->create([
+                'id_tx' => $this->generateTransaksiId(),
+                'nis' => $nis,
+                'id_t' => $tagihanId,
+                'nama_lengkap' => $data['nama_lengkap'],
+                'tgl_transaksi' => now()->toDateString(),
+                'nama_transaksi' => 'pra-MCU',
+                'nominal' => self::PRA_MCU_AMOUNT,
             ]);
 
             return $nis;
@@ -119,5 +146,23 @@ class SiswaServices
             : 1;
 
         return $prefix . str_pad((string) $nextNumber, 3, '0', STR_PAD_LEFT);
+    }
+
+    protected function generateTagihanId(): string
+    {
+        do {
+            $id = 'T' . now()->format('YmdHis') . Str::upper(Str::random(4));
+        } while (Tagihan::query()->where('id_t', $id)->exists());
+
+        return $id;
+    }
+
+    protected function generateTransaksiId(): string
+    {
+        do {
+            $id = 'TX-' . now()->format('YmdHis') . '-' . Str::upper(Str::random(5));
+        } while (Transaksi::query()->where('id_tx', $id)->exists());
+
+        return $id;
     }
 }

@@ -6,11 +6,14 @@ use App\Livewire\Forms\SiswaForm;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.app')]
 #[Title('Pendaftaran Siswa Baru')]
 class PendaftaranSiswaBaru extends Component
 {
+    use WithFileUploads;
+
     public SiswaForm $form;
 
     public bool $submitted = false;
@@ -38,6 +41,7 @@ class PendaftaranSiswaBaru extends Component
         $this->reset('submitted');
         $this->resetErrorBag();
         $this->form->reset([
+            'foto',
             'nama_lengkap',
             'panggilan',
             'tgl_lahir',

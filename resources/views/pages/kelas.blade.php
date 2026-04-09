@@ -59,11 +59,7 @@
                         </div>
             </div>
             <p>Tingkat : <i>{{$k->tingkat}}</i></p>
-            @if ($k->id_pengajar !== NULL)
-            <p>Nama Pengajar : <i>{{$k->guru->nama_s }}</i></p>
-            @else    
-            <p>Nama Pengajar : -</p>
-            @endif
+            <p>Nama Pengajar : <i>{{ $k->guru?->nama_s ?? '-' }}</i></p>
         </div>
     @endforeach
     </div>

@@ -155,9 +155,11 @@ class SiswaForm extends Form
         $this->validate($this->publicRules(), $this->publicMessages());
 
         $this->alamat = $this->buildAlamat();
+        $fotoPath = $this->foto ? $this->foto->store('foto', 'public') : null;
 
         $nis = $this->services->createPublic([
             'id_kelas' => $this->id_kelas,
+            'foto' => $fotoPath,
             'nama_lengkap' => $this->nama_lengkap,
             'panggilan' => $this->panggilan,
             'tgl_lahir' => $this->tgl_lahir,
@@ -229,6 +231,7 @@ class SiswaForm extends Form
     {
         return [
             'id_kelas' => ['required', 'exists:kelas,id_kelas'],
+            'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:3072'],
             'nama_lengkap' => ['required', 'string', 'max:255'],
             'panggilan' => ['required', 'string', 'max:255'],
             'tgl_lahir' => ['required', 'date'],
@@ -252,6 +255,9 @@ class SiswaForm extends Form
         return [
             'id_kelas.required' => 'Kelas aktif belum disetel.',
             'id_kelas.exists' => 'Kelas aktif tidak valid.',
+            'foto.image' => 'File foto harus berupa gambar.',
+            'foto.mimes' => 'Format foto harus jpg, jpeg, atau png.',
+            'foto.max' => 'Ukuran foto maksimal 3MB.',
             'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
             'panggilan.required' => 'Panggilan wajib diisi.',
             'tgl_lahir.required' => 'Tanggal lahir wajib diisi.',

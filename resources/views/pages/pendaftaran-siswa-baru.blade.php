@@ -174,6 +174,17 @@
                                     class="mt-1 w-full rounded-2xl border border-neutral-300 px-4 py-3 text-sm">
                                 @error('form.wa_wali') <p class="mt-1 pl-1 text-xs text-red-600">{{ $message }}</p> @enderror
                             </div>
+                            
+                            <div>
+                                <label for="foto" class="pl-1 text-sm font-medium text-neutral-700">Foto</label>
+                                <input id="foto" type="file" wire:model="form.foto" accept="image/jpeg,image/png"
+                                    class="mt-1 w-full rounded border border-neutral-300 px-4 py-3 text-sm file:ml-3 file:border-0 file:bg-red-900 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white">
+                                <div wire:loading wire:target="form.foto" class="mt-1 pl-1 text-xs text-neutral-500">Mengunggah preview...</div>
+                                @if ($form->foto)
+                                    <img src="{{ $form->foto->temporaryUrl() }}" alt="Preview foto siswa" class="mt-2 h-20 w-20 rounded-2xl object-cover">
+                                @endif
+                                @error('form.foto') <p class="mt-1 pl-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                            </div>
                         </div>
                     </div>
                 </div>
