@@ -26,11 +26,11 @@ new class extends Component
         <input type="text" wire:model="kelasSaatIni.id_st" hidden>
         <input type="text" wire:model="kelasSaatIni.nama_set" hidden>
         <div class="flex flex-col">
-            <label for="kelas_saat_ini" class="text-xs text-gray-600 py-1 mt-2">Kelas Saat Ini</label>
+            <label for="kelas_saat_ini" class="text-xs text-gray-600 py-1 mt-2">Kelas Baru</label>
             <div class="flex gap-2">
                 <select id="kelas_saat_ini" wire:model="kelasSaatIni.ket"
                     class="border-gray-500 focus:ring-red-800 rounded active:ring-red-200 w-full">
-                    <option value="">Pilih kelas aktif</option>
+                    <option value="">Pilih kelas baru</option>
                     @foreach ($kelasSaatIni->kelasOptions as $kelas)
                         <option value="{{ $kelas->id_kelas }}">{{ $kelas->nama_kelas }}</option>
                     @endforeach
