@@ -22,6 +22,9 @@ class SoForm extends Form
     #[Validate('required', message: 'Isi Penanggung Jawab Sending Organizer')]
     public $pj;
 
+    #[Validate('required', message: 'Isi Keterangan Sending Organizer')]
+    public $ket;
+
     #[Validate('nullable|image|mimes:jpg,jpeg,png|max:3072', message: [
         'mimes' => 'file harus JPEG,JPG,PNG',
         'max' => 'File ukuran Maksimal 3MB',
@@ -38,7 +41,7 @@ class SoForm extends Form
     {
         $this->validate();
         $this->service->create(
-            $this->only(['nama_so', 'pj', 'foto_so', 'lokasi'])
+            $this->only(['nama_so', 'pj', 'foto_so', 'lokasi', 'ket'])
         );
     }
 
@@ -50,13 +53,14 @@ class SoForm extends Form
         $this->foto_so = $so->foto_so;
         $this->lokasi = $so->lokasi;
         $this->pj = $so->pj;
+        $this->ket = $so->ket;
     }
 
     public function update()
     {
         $this->validate();
         $this->service->edit(
-            $this->only(['idso', 'nama_so', 'pj', 'foto_so', 'lokasi'])
+            $this->only(['idso', 'nama_so', 'pj', 'foto_so', 'lokasi', 'ket'])
         );
     }
 }

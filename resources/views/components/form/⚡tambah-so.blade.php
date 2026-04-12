@@ -43,6 +43,14 @@ new class extends Component
                 <span class="error text-orange-600">{{ $message }}</span>
             @enderror
         </div>
+        <div class="flex flex-col">
+            <label for="ket" class="text-xs text-gray-600 py-1 mt-2">Keterangan</label>
+            <input wire:model.defer="s.ket" type="text" name="ket" id="ket"
+                class="border-gray-500 focus:ring-red-800 rounded active:ring-red-200">
+            @error('s.ket')
+                <span class="error text-orange-600">{{ $message }}</span>
+            @enderror
+        </div>
 
         <div class="flex-1">
             <label class="block mb-2.5 text-sm font-medium text-heading" for="file_input" >Upload Logo SO</label>

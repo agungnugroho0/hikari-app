@@ -42,6 +42,7 @@ class SoService
                 'nama_so' => $data['nama_so'],
                 'lokasi' => $data['lokasi'],
                 'pj' => $data['pj'],
+                'ket' => $data['ket'],
                 'foto_so' => $path ?? null,
             ]);
         });
@@ -70,6 +71,7 @@ class SoService
                 'foto_so' => $data['foto_so'],
                 'lokasi' => $data['lokasi'],
                 'pj' => $data['pj'],
+                'ket' => $data['ket'],
             ]);
             unset($data['foto_so']);
         });
