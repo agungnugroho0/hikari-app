@@ -3,6 +3,7 @@ use App\Livewire\Forms\SiswaForm;
 use Livewire\Component;
 use App\Models\Core;
 use App\Models\Kelas;
+use Illuminate\Validation\ValidationException;
 use Livewire\WithFileUploads;
 new class extends Component {
     use WithFileUploads;
@@ -17,15 +18,34 @@ new class extends Component {
 
     public function simpan()
     {
-        $this->form->update();
-        $this->dispatch('siswa-updated');
-        $this->dispatch('pilih-siswa', $this->form->nis);
+        try {
+            $this->form->update();
+            $this->dispatch('notif', message: 'Data siswa berhasil disimpan.', type: 'success');
+            $this->dispatch('siswa-updated');
+            $this->dispatch('pilih-siswa', $this->form->nis);
+        } catch (ValidationException $exception) {
+            $this->dispatch('notif', message: 'Gagal simpan. Periksa field yang masih merah.', type: 'error');
+            throw $exception;
+        } catch (\Throwable $exception) {
+            report($exception);
+            $this->dispatch('notif', message: 'Terjadi kesalahan saat menyimpan data siswa.', type: 'error');
+        }
     }
 };
 ?>
 
 <div>
     <form wire:submit.prevent="simpan">
+        @if ($errors->any())
+            <div class="mb-3 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+                <p class="font-semibold">Data belum bisa disimpan:</p>
+                <ul class="mt-1 list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <div class="flex gap-2">
             <div>

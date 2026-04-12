@@ -91,7 +91,7 @@ class SiswaForm extends Form
         $this->foto_lama = $siswa->foto;
         $this->foto = null;
         $this->id_kelas = $siswa->id_kelas;
-        $this->nama_kelas = $siswa->kelas->nama_kelas;
+        // $this->nama_kelas = $siswa->kelas->nama_kelas;
         $this->nama_lengkap = $siswa->detail->nama_lengkap;
         $this->panggilan = $siswa->detail->panggilan;
         $this->tgl_lahir = $siswa->detail->tgl_lahir->format('Y-m-d');
@@ -112,7 +112,7 @@ class SiswaForm extends Form
 
     public function update()
     {
-        $this->validate();
+        $this->validate($this->updateRules(), $this->updateMessages(), $this->updateAttributes());
         $this->alamat = $this->buildAlamat();
         $path = $this->foto_lama;
             if ($this->foto) {
@@ -148,6 +148,71 @@ class SiswaForm extends Form
             'agama' => $this->agama,
             ]
         );
+    }
+
+    protected function updateRules(): array
+    {
+        return [
+            'nis' => ['required'],
+            'status' => ['required'],
+            'id_kelas' => ['required', 'exists:kelas,id_kelas'],
+            'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:3072'],
+            'nama_lengkap' => ['required', 'string', 'max:255'],
+            'panggilan' => ['required', 'string', 'max:255'],
+            'tgl_lahir' => ['required', 'date'],
+            'gender' => ['required', 'in:L,P'],
+            'tempat_lhr' => ['required', 'string', 'max:100'],
+            'alamat_desa' => ['required', 'string', 'max:255'],
+            'alamat_rt' => ['required', 'numeric'],
+            'alamat_rw' => ['required', 'numeric'],
+            'alamat_kecamatan' => ['required', 'string', 'max:255'],
+            'alamat_kabupaten' => ['required', 'string', 'max:255'],
+            'alamat_provinsi' => ['required', 'string', 'max:255'],
+            'wa' => ['required', 'string', 'max:255'],
+            'wa_wali' => ['nullable', 'string', 'max:255'],
+            'pernikahan' => ['required', 'string', 'max:255'],
+            'agama' => ['required', 'string', 'max:255'],
+        ];
+    }
+
+    protected function updateMessages(): array
+    {
+        return [
+            'required' => ':attribute wajib diisi.',
+            'numeric' => ':attribute harus berupa angka.',
+            'date' => ':attribute tidak valid.',
+            'exists' => ':attribute tidak valid.',
+            'image' => 'File foto harus berupa gambar.',
+            'mimes' => 'Format foto harus jpg, jpeg, atau png.',
+            'max' => ':attribute maksimal :max karakter.',
+            'foto.max' => 'Ukuran foto maksimal 3MB.',
+            'gender.in' => 'Jenis kelamin wajib dipilih.',
+        ];
+    }
+
+    protected function updateAttributes(): array
+    {
+        return [
+            'nis' => 'NIS',
+            'status' => 'Status siswa',
+            'id_kelas' => 'Kelas',
+            'foto' => 'Foto',
+            'nama_lengkap' => 'Nama lengkap',
+            'panggilan' => 'Panggilan',
+            'tgl_lahir' => 'Tanggal lahir',
+            'gender' => 'Jenis kelamin',
+            'tempat_lhr' => 'Tempat lahir',
+            'alamat_desa' => 'Desa',
+            'alamat_rt' => 'RT',
+            'alamat_rw' => 'RW',
+            'alamat_kecamatan' => 'Kecamatan',
+            'alamat_kabupaten' => 'Kabupaten',
+            'alamat_provinsi' => 'Provinsi',
+            'wa' => 'No Whatsapp',
+            'wa_wali' => 'No Whatsapp wali',
+            'pernikahan' => 'Status pernikahan',
+            'agama' => 'Agama',
+        ];
     }
 
     public function storePublic(): string
