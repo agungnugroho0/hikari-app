@@ -20,6 +20,7 @@ class StaffFactory extends Factory
         return [
             // 'id_staff' => fake()->unique()->numberBetween(100,900),
             'nama_s' => fake()->name(),
+            'no' => fake()->phoneNumber(),
             'akses' => fake()->randomElement(['admin','guru','dev']),
             'foto_s' => Str::random(10),
             'password' => Hash::make('123456'),

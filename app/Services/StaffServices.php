@@ -16,6 +16,7 @@ class StaffServices
             return Staff::create([
                 'username' => $data['username'],
                 'nama_s' => $data['nama_s'],
+                'no' => $data['no'],
                 'akses' => $data['akses'],
                 'foto_s' => $data['foto_s'] ? $data['foto_s']->store('staff', 'public') : null,
                 'password' => Hash::make('123456'),
@@ -46,6 +47,7 @@ class StaffServices
             $staff->update([
                 'username' => $data['username'],
                 'nama_s' => $data['nama_s'],
+                'no' => $data['no'],
                 'akses' => $data['akses'],
                 'foto_s' => $data['foto_s'],
             ]);

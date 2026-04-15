@@ -46,6 +46,15 @@ new class extends Component
         </div>
 
         <div class="flex flex-col">
+            <label for="no" class="text-xs text-gray-600 py-1 mt-2">No</label>
+            <input wire:model.defer="staff.no" type="text" name="no" id="no"
+                class="border-gray-500 focus:ring-red-800 rounded active:ring-red-200">
+            @error('staff.no')
+                <span class="error text-orange-600">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div class="flex flex-col">
             <label for="akses" class="text-xs text-gray-600 py-1 mt-2">Akses</label>
             <select wire:model.defer="staff.akses" name="akses" id="akses"
                 class="border-gray-500 focus:ring-red-800 rounded active:ring-red-200">

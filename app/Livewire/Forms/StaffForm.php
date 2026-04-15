@@ -19,6 +19,9 @@ class StaffForm extends Form
     #[Validate('required', message: 'Silahkan Isi Nama Lengkap')]
     public $nama_s;
 
+    #[Validate('required', message: 'Isi nomor staff')]
+    public $no;
+
     #[Validate('required|unique:staff,username', message: ['required' => 'Isi username', 'unique' => 'Harus unik'])]
     public $username;
 
@@ -43,7 +46,7 @@ class StaffForm extends Form
         $this->validate();
         $this->services->create(
             $this->only([
-                'nama_s', 'username', 'akses', 'foto_s',
+                'nama_s', 'no', 'username', 'akses', 'foto_s',
             ])
         );
     }
@@ -53,6 +56,7 @@ class StaffForm extends Form
             $staff = Staff::findorfail($id);
             $this->id_staff = $staff->id_staff;
             $this->nama_s = $staff->nama_s;
+            $this->no = $staff->no;
             $this->username = $staff->username;
             $this->akses = $staff->akses;
             $this->foto_s = $staff->foto_s;
@@ -62,11 +66,12 @@ class StaffForm extends Form
     {
         $this->validate([
             'nama_s' => 'required',
+            'no' => 'required',
             'akses' => 'required',
         ]);
         $this->services->edit(
             $this->only([
-                'id_staff', 'nama_s', 'username', 'akses', 'foto_s',
+                'id_staff', 'nama_s', 'no', 'username', 'akses', 'foto_s',
             ])
         );
     }
