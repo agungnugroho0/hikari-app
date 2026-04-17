@@ -16,8 +16,8 @@ class NafudaController extends Controller
         $nafuda = Settings::where('nama_set', 'nafuda')->firstOrFail();
         $nafuda2 = Settings::where('nama_set', 'nafuda2')->firstOrFail();
         $siswa = Core::with(['detail'])->where('nis', $nis)->firstOrFail();
-        $backgroundLeft = storage_path('app/public/'.$nafuda->ket);
-        $backgroundRight = storage_path('app/public/'.$nafuda2->ket);
+        $backgroundLeft = storage_path($nafuda->ket);
+        $backgroundRight = storage_path($nafuda2->ket);
         $panggilan = trim((string) data_get($siswa, 'detail.panggilan', ''));
         $nama = trim((string) data_get($siswa, 'nama', $siswa->nis));
 
