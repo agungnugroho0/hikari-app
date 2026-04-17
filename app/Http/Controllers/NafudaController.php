@@ -21,7 +21,7 @@ class NafudaController extends Controller
         $panggilan = trim((string) data_get($siswa, 'detail.panggilan', ''));
         $nama = trim((string) data_get($siswa, 'nama', $siswa->nis));
 
-        $fontPath = public_path('fonts/Naganoshi.ttf');
+        // $fontPath = public_path('fonts/Naganoshi.ttf');
         // $fontFamily = 'kozminproregular';
 
         // if (is_file($fontPath)) {
