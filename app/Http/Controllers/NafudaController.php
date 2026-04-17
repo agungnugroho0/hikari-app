@@ -22,14 +22,14 @@ class NafudaController extends Controller
         $nama = trim((string) data_get($siswa, 'nama', $siswa->nis));
 
         $fontPath = public_path('fonts/Naganoshi.ttf');
-        $fontFamily = 'kozminproregular';
+        // $fontFamily = 'kozminproregular';
 
-        if (is_file($fontPath)) {
-            $registeredFont = \TCPDF_FONTS::addTTFfont($fontPath, 'TrueTypeUnicode', '', 96);
-            if ($registeredFont) {
-                $fontFamily = $registeredFont;
-            }
-        }
+        // if (is_file($fontPath)) {
+        //     $registeredFont = \TCPDF_FONTS::addTTFfont($fontPath, 'TrueTypeUnicode', '', 96);
+        //     if ($registeredFont) {
+        //         $fontFamily = $registeredFont;
+        //     }
+        // }
 
         if (ob_get_length()) {
             ob_end_clean();
