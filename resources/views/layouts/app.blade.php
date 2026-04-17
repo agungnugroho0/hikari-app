@@ -11,6 +11,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @livewireStyles
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
+{{-- <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}?v=2"> --}}
 </head>
 
 <body>

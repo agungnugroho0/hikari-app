@@ -64,7 +64,7 @@ class NafudaController extends Controller
 
         $qrStyle = [
             'border' => 0,
-            'padding' => 0,
+            'padding' => 3,
             'fgcolor' => [0, 0, 0],
             'bgcolor' => [255, 255, 255],
         ];
@@ -73,12 +73,12 @@ class NafudaController extends Controller
         $pdf->write2DBarcode($siswa->nis, 'QRCODE,H', 110, 29, 17, 17, $qrStyle, 'N');
 
         if ($panggilan !== '') {
-            $pdf->SetFont($fontFamily, '', 28);
+            $pdf->SetFont('ipag', '', 28);
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetXY(37, 29);
             $pdf->MultiCell(70, 12, $panggilan, 0, 'L');
 
-            $pdf->SetFont($fontFamily, '', 28);
+            $pdf->SetFont('ipag', '', 28);
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetXY(129, 29);
             $pdf->MultiCell(70, 12, $panggilan, 0, 'L');
