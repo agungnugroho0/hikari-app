@@ -137,15 +137,16 @@ class Finance extends Component
             ->whereHas('listtagihan_siswa', fn ($query) => $this->applyTagihanPeriod($query))
             ->count();
 
-        $incomeQuery = Transaksi::query();
-        $this->applyTransaksiPeriod($incomeQuery);
+        $totalTagihan = (int) (clone $tagihanQuery)->sum('total_tagihan');
+        $totalKekurangan = (int) (clone $tagihanQuery)->sum('kekurangan_tagihan');
+        $totalIncome = max(0, $totalTagihan - $totalKekurangan);
 
         return [
             'student_count' => $studentCount,
             'invoice_count' => (int) $tagihanQuery->count(),
-            'total_tagihan' => (int) (clone $tagihanQuery)->sum('total_tagihan'),
-            'total_kekurangan' => (int) (clone $tagihanQuery)->sum('kekurangan_tagihan'),
-            'total_income' => (int) $incomeQuery->sum('nominal'),
+            'total_tagihan' => $totalTagihan,
+            'total_kekurangan' => $totalKekurangan,
+            'total_income' => $totalIncome,
         ];
     }
 
@@ -164,13 +165,6 @@ class Finance extends Component
         return $query
             ->when($this->selectedYear, fn ($builder) => $builder->whereYear('tgl_terbit', $this->selectedYear))
             ->when($this->selectedMonth, fn ($builder) => $builder->whereMonth('tgl_terbit', $this->selectedMonth));
-    }
-
-    protected function applyTransaksiPeriod($query)
-    {
-        return $query
-            ->when($this->selectedYear, fn ($builder) => $builder->whereYear('tgl_transaksi', $this->selectedYear))
-            ->when($this->selectedMonth, fn ($builder) => $builder->whereMonth('tgl_transaksi', $this->selectedMonth));
     }
 
     public function render()

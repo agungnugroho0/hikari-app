@@ -58,7 +58,7 @@
         <article class="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
             <p class="text-sm text-neutral-500">Total income</p>
             <p class="mt-2 text-3xl font-bold text-neutral-900">Rp {{ number_format($this->summary['total_income'], 0, ',', '.') }}</p>
-            <p class="mt-2 text-xs text-neutral-500">{{ $this->selectedPeriodLabel }}</p>
+            <p class="mt-2 text-xs text-neutral-500">Akumulasi pembayaran dari tagihan pada {{ strtolower($this->selectedPeriodLabel) }}</p>
         </article>
 
         <article class="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
