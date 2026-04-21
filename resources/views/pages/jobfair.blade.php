@@ -115,30 +115,41 @@
 
                     <div x-show="open || window.innerWidth >= 1280" x-transition class="flex-1 xl:block ">
                         @foreach ($item->list_job as $job)
-                            <div class="bg-gray-50 p-1 flex">
-                                <p class="font-normal">{{ $job->nama_job }}</p>
+                            <div class="bg-gray-50 p-2">
+                                <div class="flex gap-2">
+                                    <div>
+                                        <p class="font-normal">{{ $job->nama_job }}</p>
+                                        <p class="text-sm text-neutral-600">Perusahaan: {{ $job->perusahaan }}</p>
+                                        <p class="text-sm text-neutral-500">
+                                            Tanggal wawancara:
+                                            {{ $job->tgl_wawancara ? \Carbon\Carbon::parse($job->tgl_wawancara)->translatedFormat('d M Y') : '-' }}
+                                        </p>
+                                        <p class="text-sm text-neutral-500">Metode seleksi: {{ $job->metode ?: '-' }}</p>
+                                        <p class="text-sm text-neutral-500">Penempatan: {{ $job->penempatan ?: '-' }}</p>
+                                    </div>
 
-                                <div x-data="{ open: false }" class="ml-auto relative pl-5">
-                                    <button @click.stop="open = !open">
-                                        ---
-                                    </button>
+                                    <div x-data="{ open: false }" class="ml-auto relative pl-5">
+                                        <button @click.stop="open = !open">
+                                            ---
+                                        </button>
 
-                                    <div x-show="open" @click.outside="open = false" x-transition
-                                        class="absolute right-0 mt-2 z-10 bg-white rounded shadow shadow-gray-200 w-40">
-                                        <ul class="p-2 text-sm">
-                                            <li>
-                                                <div wire:click.stop="editjobs('{{ $job->id_job }}')"
-                                                    class="px-2 py-1 hover:bg-gray-100 cursor-pointer">
-                                                    Edit
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div wire:click.stop="confirmDelete('{{ $job->id_job }}')"
-                                                    class="px-2 py-1 hover:bg-gray-100 cursor-pointer text-red-600">
-                                                    Delete
-                                                </div>
-                                            </li>
-                                        </ul>
+                                        <div x-show="open" @click.outside="open = false" x-transition
+                                            class="absolute right-0 mt-2 z-10 bg-white rounded shadow shadow-gray-200 w-40">
+                                            <ul class="p-2 text-sm">
+                                                <li>
+                                                    <div wire:click.stop="editjobs('{{ $job->id_job }}')"
+                                                        class="px-2 py-1 hover:bg-gray-100 cursor-pointer">
+                                                        Edit
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div wire:click.stop="confirmDelete('{{ $job->id_job }}')"
+                                                        class="px-2 py-1 hover:bg-gray-100 cursor-pointer text-red-600">
+                                                        Delete
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
