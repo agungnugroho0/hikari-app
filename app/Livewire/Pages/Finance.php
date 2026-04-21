@@ -105,19 +105,19 @@ class Finance extends Component
         return Core::query()
             ->with([
                 'detail',
-                'listtagihan_siswa' => fn ($query) => $this->applyTagihanPeriod($query)
-                    ->orderBy('tgl_terbit')
-                    ->orderBy('id_t'),
+                'listtagihan_siswa' => function ($query) use ($search) {
+                    if ($search === '') {
+                        $this->applyTagihanPeriod($query);
+                    }
+
+                    $query->orderBy('tgl_terbit')
+                        ->orderBy('id_t');
+                },
             ])
-            ->whereHas('listtagihan_siswa', fn ($query) => $this->applyTagihanPeriod($query))
-            ->when($search !== '', function ($query) use ($search) {
-                $query->where(function ($subQuery) use ($search) {
-                    $subQuery->where('nis', 'like', "%{$search}%")
-                        ->orWhereHas('detail', function ($detailQuery) use ($search) {
-                            $detailQuery->where('nama_lengkap', 'like', "%{$search}%");
-                        });
-                });
+            ->when($search === '', function ($query) {
+                $query->whereHas('listtagihan_siswa', fn ($subQuery) => $this->applyTagihanPeriod($subQuery));
             })
+            ->when($search !== '', fn ($query) => $this->applyStudentSearch($query, $search))
             ->orderBy(
                 DetailSiswa::query()
                     ->select('nama_lengkap')
@@ -130,12 +130,20 @@ class Finance extends Component
     #[Computed]
     public function summary(): array
     {
-        $tagihanQuery = Tagihan::query();
-        $this->applyTagihanPeriod($tagihanQuery);
+        $search = trim($this->search);
 
-        $studentCount = Core::query()
-            ->whereHas('listtagihan_siswa', fn ($query) => $this->applyTagihanPeriod($query))
-            ->count();
+        $tagihanQuery = Tagihan::query();
+        $studentQuery = Core::query();
+
+        if ($search !== '') {
+            $this->applyStudentSearch($studentQuery, $search);
+            $tagihanQuery->whereIn('nis', (clone $studentQuery)->select('nis'));
+        } else {
+            $this->applyTagihanPeriod($tagihanQuery);
+            $studentQuery->whereHas('listtagihan_siswa', fn ($query) => $this->applyTagihanPeriod($query));
+        }
+
+        $studentCount = (clone $studentQuery)->count();
 
         $totalTagihan = (int) (clone $tagihanQuery)->sum('total_tagihan');
         $totalKekurangan = (int) (clone $tagihanQuery)->sum('kekurangan_tagihan');
@@ -165,6 +173,16 @@ class Finance extends Component
         return $query
             ->when($this->selectedYear, fn ($builder) => $builder->whereYear('tgl_terbit', $this->selectedYear))
             ->when($this->selectedMonth, fn ($builder) => $builder->whereMonth('tgl_terbit', $this->selectedMonth));
+    }
+
+    protected function applyStudentSearch($query, string $search)
+    {
+        return $query->where(function ($subQuery) use ($search) {
+            $subQuery->where('nis', 'like', "%{$search}%")
+                ->orWhereHas('detail', function ($detailQuery) use ($search) {
+                    $detailQuery->where('nama_lengkap', 'like', "%{$search}%");
+                });
+        });
     }
 
     public function render()

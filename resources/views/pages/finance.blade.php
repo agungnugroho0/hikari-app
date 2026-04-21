@@ -17,7 +17,7 @@
                 <input
                     type="text"
                     wire:model.live.debounce.300ms="search"
-                    placeholder="Cari nama lengkap atau NIS"
+                    placeholder="Cari semua siswa berdasarkan nama atau NIS"
                     class="rounded-xl border border-neutral-300 px-3 py-2 text-sm focus:border-red-700 focus:outline-none"
                 >
             </label>
@@ -119,11 +119,15 @@
                             </td>
                             <td class="px-4 py-4">
                                 <div class="flex flex-wrap gap-2">
-                                    @foreach ($tagihanList as $tagihan)
+                                    @forelse ($tagihanList as $tagihan)
                                         <span class="whitespace-nowrap rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-700">
                                             {{ $tagihan->id_t }}
                                         </span>
-                                    @endforeach
+                                    @empty
+                                        <span class="whitespace-nowrap rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-500">
+                                            Tidak ada tagihan
+                                        </span>
+                                    @endforelse
                                 </div>
                             </td>
                             <td class="px-4 py-4">
@@ -137,8 +141,8 @@
                                 Rp {{ number_format($totalKekurangan, 0, ',', '.') }}
                             </td>
                             <td class="whitespace-nowrap px-4 py-4">
-                                <span class="{{ $isLunas ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700' }} inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide">
-                                    {{ $isLunas ? 'Lunas' : 'Belum Lunas' }}
+                                <span class="{{ $tagihanList->isEmpty() ? 'bg-neutral-100 text-neutral-600' : ($isLunas ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700') }} inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+                                    {{ $tagihanList->isEmpty() ? 'Tidak Ada Tagihan' : ($isLunas ? 'Lunas' : 'Belum Lunas') }}
                                 </span>
                             </td>
                             <td class="whitespace-nowrap px-4 py-4">
