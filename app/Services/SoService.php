@@ -57,7 +57,7 @@ class SoService
                     Storage::disk('public')->delete($so->foto_so);
                 }
                 // simpan foto baru
-                $filename = Str::slug($data['nama_so']).'.'.$data['foto_so']->getClientOriginalExtension();
+                $filename = Str::uuid().'.'.$data['foto_so']->getClientOriginalExtension();
                 $data['foto_so'] = $data['foto_so']->storeAs('foto_so', $filename, 'public');
 
             } else {
