@@ -6,7 +6,6 @@ use App\Models\So;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class SoService
 {
@@ -31,7 +30,7 @@ class SoService
         return DB::transaction(function () use ($data) {
 
             $filename = null;
-
+            $path = null;
             if ($data['foto_so']) {
                 $filename = Str::slug($data['nama_so']).'.'.$data['foto_so']->getClientOriginalExtension();
                 $path = $data['foto_so']->storeAs('foto_so', $filename, 'public');
@@ -52,7 +51,7 @@ class SoService
     {
         return DB::transaction(function () use ($data) {
             $so = So::findOrfail($data['idso']);
-            if ($data['foto_so'] && $data['foto_so'] instanceof TemporaryUploadedFile) {
+            if (! empty($data['foto_so']) && is_object($data['foto_so'])) {
                 // hapus foto lama
                 if ($so->foto_so && Storage::disk('public')->exists($so->foto_so)) {
                     Storage::disk('public')->delete($so->foto_so);
