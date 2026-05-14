@@ -231,6 +231,14 @@ window.reportCharts = function reportCharts(config) {
                             fill: false,
                         },
                         {
+                            label: "Sakit",
+                            data: this.attendanceSeries.map((item) => item.sakit),
+                            borderColor: "#a21caf",
+                            backgroundColor: "rgba(217, 70, 239, 0.18)",
+                            pointBorderColor: "#a21caf",
+                            fill: false,
+                        },
+                        {
                             label: "Alfa",
                             data: this.attendanceSeries.map((item) => item.alfa),
                             borderColor: "#991b1b",

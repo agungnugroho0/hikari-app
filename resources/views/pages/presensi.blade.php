@@ -27,7 +27,7 @@
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-[0.24em] text-red-900/70">Kontrol Manual</p>
                     <h2 class="mt-1 text-lg font-semibold text-neutral-900">Daftar siswa belum absen</h2>
-                    <p class="mt-1 text-sm text-neutral-500">Gunakan tombol cepat untuk menandai hadir, mensetsu, izin, atau alfa.</p>
+                    <p class="mt-1 text-sm text-neutral-500">Gunakan tombol cepat untuk menandai hadir, mensetsu, izin, sakit atau alfa.</p>
                 </div>
                 <a href="{{ route('home') }}" wire:navigate
                     class="inline-flex min-h-11 items-center justify-center rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-100">

@@ -9,7 +9,7 @@
 <body>
     @php
         $dayColumnCount = count($days);
-        $summaryColumns = 4;
+        $summaryColumns = 5;
         $totalColumns = 2 + $dayColumnCount + $summaryColumns;
     @endphp
 
@@ -44,6 +44,7 @@
                 <th>HADIR</th>
                 <th>MENSETSU</th>
                 <th>IZIN</th>
+                <th>SAKIT</th>
                 <th>ALPHA</th>
             </tr>
         </thead>
@@ -58,6 +59,7 @@
                     <td style="text-align: center;">{{ $student->hadir }}</td>
                     <td style="text-align: center;">{{ $student->mensetsu }}</td>
                     <td style="text-align: center;">{{ $student->ijin }}</td>
+                    <td style="text-align: center;">{{ $student->sakit }}</td>
                     <td style="text-align: center;">{{ $student->alfa }}</td>
                 </tr>
             @endforeach
@@ -66,6 +68,7 @@
                 <td style="text-align: center;">{{ $recap->firstWhere('key', 'hadir')['total'] ?? 0 }}</td>
                 <td style="text-align: center;">{{ $recap->firstWhere('key', 'mensetsu')['total'] ?? 0 }}</td>
                 <td style="text-align: center;">{{ $recap->firstWhere('key', 'ijin')['total'] ?? 0 }}</td>
+                <td style="text-align: center;">{{ $recap->firstWhere('key', 'sakit')['total'] ?? 0 }}</td>
                 <td style="text-align: center;">{{ $recap->firstWhere('key', 'alfa')['total'] ?? 0 }}</td>
             </tr>
         </tbody>
@@ -89,6 +92,10 @@
         <tr>
             <td>I</td>
             <td>Izin</td>
+        </tr>
+        <tr>
+            <td>S</td>
+            <td>Sakit</td>
         </tr>
         <tr>
             <td>A</td>

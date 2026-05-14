@@ -22,6 +22,11 @@
                     class="rounded-xl bg-amber-500 px-3 py-2 text-sm font-medium text-white transition hover:bg-amber-400 active:bg-amber-600">
                     Ijin
                 </button>
+                
+                <button wire:target.attr="disabled" wire:click="absen({{ $s->nis }}, 's')"
+                    class="rounded-xl bg-amber-500 px-3 py-2 text-sm font-medium text-white transition hover:bg-amber-400 active:bg-amber-600">
+                    Sakit
+                </button>
 
                 <button wire:target.attr="disabled" wire:click="absen({{ $s->nis }}, 'a')"
                     class="rounded-xl bg-red-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-red-800 active:bg-red-950">

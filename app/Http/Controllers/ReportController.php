@@ -16,6 +16,7 @@ class ReportController extends Controller
         'hadir' => 'Hadir',
         'mensetsu' => 'Mensetsu',
         'ijin' => 'Ijin',
+        'sakit' => 'Sakit',
         'alfa' => 'Alfa',
     ];
 
@@ -83,6 +84,7 @@ class ReportController extends Controller
                     WHEN LOWER(absen.ket) = 'h' THEN 'hadir'
                     WHEN LOWER(absen.ket) = 'm' THEN 'mensetsu'
                     WHEN LOWER(absen.ket) = 'i' THEN 'ijin'
+                    WHEN LOWER(absen.ket) = 's' THEN 'sakit'
                     WHEN LOWER(absen.ket) = 'a' THEN 'alfa'
                     ELSE null
                 END as status_key
@@ -98,6 +100,7 @@ class ReportController extends Controller
             'hadir' => 'H',
             'mensetsu' => 'M',
             'ijin' => 'I',
+            'sakit' => 'S',
             'alfa' => 'A',
         ];
 
@@ -122,6 +125,7 @@ class ReportController extends Controller
                 $student->hadir = $dailyStatuses->filter(fn ($value) => $value === 'H')->count();
                 $student->mensetsu = $dailyStatuses->filter(fn ($value) => $value === 'M')->count();
                 $student->ijin = $dailyStatuses->filter(fn ($value) => $value === 'I')->count();
+                $student->sakit = $dailyStatuses->filter(fn ($value) => $value === 'S')->count();
                 $student->alfa = $dailyStatuses->filter(fn ($value) => $value === 'A')->count();
 
                 return $student;

@@ -24,6 +24,11 @@ abstract class BaseLaporan extends Component
             'color' => '#1d4ed8',
             'background' => 'rgba(59, 130, 246, 0.18)',
         ],
+        'sakit' => [
+            'label' => 'Sakit',
+            'color' => '#991b1b',
+            'background' => 'rgba(245, 158, 11, 0.18)',
+        ],
         'ijin' => [
             'label' => 'Ijin',
             'color' => '#b45309',
@@ -258,6 +263,7 @@ abstract class BaseLaporan extends Component
                     'hadir' => 0,
                     'mensetsu' => 0,
                     'ijin' => 0,
+                    'sakit' => 0,
                     'alfa' => 0,
                 ])
                 ->all();
@@ -303,6 +309,7 @@ abstract class BaseLaporan extends Component
                 CASE
                     WHEN LOWER(absen.ket) = 'h' THEN 'hadir'
                     WHEN LOWER(absen.ket) = 'i' THEN 'ijin'
+                    WHEN LOWER(absen.ket) = 's' THEN 'sakit'
                     WHEN LOWER(absen.ket) = 'm' THEN 'mensetsu'
                     WHEN LOWER(absen.ket) = 'a' THEN 'alfa'
                     ELSE 'unknown'
@@ -316,6 +323,7 @@ abstract class BaseLaporan extends Component
                 CASE
                     WHEN LOWER(absen.ket) = 'h' THEN 'hadir'
                     WHEN LOWER(absen.ket) = 'i' THEN 'ijin'
+                    WHEN LOWER(absen.ket) = 's' THEN 'sakit'
                     WHEN LOWER(absen.ket) = 'm' THEN 'mensetsu'
                     WHEN LOWER(absen.ket) = 'a' THEN 'alfa'
                     ELSE 'unknown'
@@ -341,6 +349,7 @@ abstract class BaseLaporan extends Component
                     'hadir' => (int) ($totals['hadir'] ?? 0),
                     'mensetsu' => (int) ($totals['mensetsu'] ?? 0),
                     'ijin' => (int) ($totals['ijin'] ?? 0),
+                    'sakit' => (int) ($totals['sakit'] ?? 0),
                     'alfa' => (int) ($totals['alfa'] ?? 0),
                 ];
             })
@@ -373,7 +382,7 @@ abstract class BaseLaporan extends Component
             'selected_month_name' => $startDate->translatedFormat('F'),
             'total_students' => $totalStudents,
             'total_recorded_attendances' => $totalRecordedAttendances,
-            'max_total' => max(1, ...array_map(fn (array $item) => max($item['hadir'], $item['mensetsu'], $item['ijin'], $item['alfa']), $series)),
+            'max_total' => max(1, ...array_map(fn (array $item) => max($item['hadir'], $item['mensetsu'], $item['ijin'], $item['sakit'], $item['alfa']), $series)),
         ];
     }
 
