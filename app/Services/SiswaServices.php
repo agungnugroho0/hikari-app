@@ -15,6 +15,8 @@ class SiswaServices
 {
     protected const PRA_MCU_AMOUNT = 500000;
 
+    protected const HIKARI_MOUNT = 3000000;
+
     public function createPublic(array $data): string
     {
         return DB::transaction(function () use ($data) {
@@ -61,6 +63,28 @@ class SiswaServices
                 'tgl_transaksi' => now()->toDateString(),
                 'nama_transaksi' => 'pra-MCU',
                 'nominal' => self::PRA_MCU_AMOUNT,
+            ]);
+
+            $hikariTagihanId = $this->generateTagihanId();
+            Tagihan::query()->create([
+                'id_t' => $hikariTagihanId,
+                'nis' => $nis,
+                'id_so' => null,
+                'tgl_terbit' => now()->toDateString(),
+                'nama_tagihan' => 'tagihan Hikari awal',
+                'kekurangan_tagihan' => 0,
+                'total_tagihan' => self::HIKARI_MOUNT,
+                'status_tagihan' => 'lunas',
+            ]);
+
+            Transaksi::query()->create([
+                'id_tx' => $this->generateTransaksiId(),
+                'nis' => $nis,
+                'id_t' => $hikariTagihanId,
+                'nama_lengkap' => $data['nama_lengkap'],
+                'tgl_transaksi' => now()->toDateString(),
+                'nama_transaksi' => 'tagihan Hikari awal',
+                'nominal' => self::HIKARI_MOUNT,
             ]);
 
             return $nis;
@@ -136,7 +160,7 @@ class SiswaServices
         $prefix = now()->format('Ymd');
 
         $latest = Core::query()
-            ->where('nis', 'like', $prefix . '%')
+            ->where('nis', 'like', $prefix.'%')
             ->orderByDesc('nis')
             ->lockForUpdate()
             ->first();
@@ -145,13 +169,13 @@ class SiswaServices
             ? ((int) substr($latest->nis, 8)) + 1
             : 1;
 
-        return $prefix . str_pad((string) $nextNumber, 3, '0', STR_PAD_LEFT);
+        return $prefix.str_pad((string) $nextNumber, 3, '0', STR_PAD_LEFT);
     }
 
     protected function generateTagihanId(): string
     {
         do {
-            $id = 'T' . now()->format('YmdHis') . Str::upper(Str::random(4));
+            $id = 'T'.now()->format('YmdHis').Str::upper(Str::random(4));
         } while (Tagihan::query()->where('id_t', $id)->exists());
 
         return $id;
@@ -160,7 +184,7 @@ class SiswaServices
     protected function generateTransaksiId(): string
     {
         do {
-            $id = 'TX-' . now()->format('YmdHis') . '-' . Str::upper(Str::random(5));
+            $id = 'TX-'.now()->format('YmdHis').'-'.Str::upper(Str::random(5));
         } while (Transaksi::query()->where('id_tx', $id)->exists());
 
         return $id;
