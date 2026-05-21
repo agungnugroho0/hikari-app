@@ -9,6 +9,7 @@ use App\Models\So;
 use App\Models\Tagihan;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class WawancaraServices
 {
@@ -26,12 +27,13 @@ class WawancaraServices
         return $prefix.str_pad($number, 3, '0', STR_PAD_LEFT);
     }
 
-    public function nextId($id)
+    protected function generateTagihanId(): string
     {
-        $prefix = substr($id, 0, -3);
-        $num = (int) substr($id, -3) + 1;
+        do {
+            $id = 'T'.now()->format('YmdHis').Str::upper(Str::random(4));
+        } while (Tagihan::query()->where('id_t', $id)->exists());
 
-        return $prefix.str_pad($num, 3, '0', STR_PAD_LEFT);
+        return $id;
     }
 
     public function create(array $data)
@@ -44,8 +46,8 @@ class WawancaraServices
                     $q->where('id_job', '=', $data['id_job']);})->lockforupdate()->firstorFail();
 
             $id_lolos = $this->generateId('L', ListLolos::class, 'id_lolos');
-            $id_t = $this->generateId('T', Tagihan::class, 'id_t');
-            $id_t2 = $this->nextId($id_t);
+            $id_t = $this->generateTagihanId();
+            $id_t2 = $this->generateTagihanId();
 
 
             // input loglolos
