@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'fonnte' => [
+        'endpoint' => env('FONNTE_ENDPOINT', 'https://api.fonnte.com/send'),
+        'token' => env('FONNTE_TOKEN'),
+        'country_code' => env('FONNTE_COUNTRY_CODE', '62'),
+        'timeout' => env('FONNTE_TIMEOUT', 15),
+    ],
+
 ];

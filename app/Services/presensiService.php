@@ -4,10 +4,13 @@ namespace App\Services;
 
 use App\Models\Absen;
 use Illuminate\Support\Facades\DB;
-use function Symfony\Component\Clock\now;
 
 class presensiService
 {
+    public function __construct(
+        private readonly FonnteWhatsAppService $whatsAppService
+    ) {}
+
     public function generateId()
     {
         $prefix = 'ABS'.date('Ymd');
@@ -25,24 +28,29 @@ class presensiService
 
     public function absen($nis, $status)
     {
-        $data = ['nis'=>$nis,'status'=>$status];
-        
-        return DB::transaction(function() use($data) {
+        $data = ['nis' => $nis, 'status' => $status];
 
-                $sudah = Absen::where('nis',$data['nis'])
-                    ->whereDate('tgl', date('Y-m-d'))
-                    ->exists();
+        $absen = DB::transaction(function () use ($data) {
+            $sudah = Absen::where('nis', $data['nis'])
+                ->whereDate('tgl', date('Y-m-d'))
+                ->exists();
 
-                if ($sudah) {
-                    return false; // ❌ sudah absen
-                }
-                Absen::create([
-                    'id_absen' => $this->generateId(),
-                    'nis' => $data['nis'],
-                    'tgl' => date('Y-m-d'),
-                    'ket' => $data['status']
-                ]);
-            
+            if ($sudah) {
+                return false;
+            }
+
+            return Absen::create([
+                'id_absen' => $this->generateId(),
+                'nis' => $data['nis'],
+                'tgl' => date('Y-m-d'),
+                'ket' => $data['status'],
+            ]);
         });
+
+        if ($absen && strtolower($status) === 'a') {
+            $this->whatsAppService->sendAlfaNotification($absen);
+        }
+
+        return $absen;
     }
 }
