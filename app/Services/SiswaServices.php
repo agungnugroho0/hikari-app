@@ -19,7 +19,19 @@ class SiswaServices
 
     public function createPublic(array $data): string
     {
-        return DB::transaction(function () use ($data) {
+        return $this->createPublicStudent($data, true);
+    }
+
+    public function createMaching(array $data): string
+    {
+        $data['id_kelas'] = '10';
+
+        return $this->createPublicStudent($data, false);
+    }
+
+    protected function createPublicStudent(array $data, bool $withInitialBilling): string
+    {
+        return DB::transaction(function () use ($data, $withInitialBilling) {
             $nis = $this->generateNis();
 
             Core::query()->create([
@@ -42,6 +54,10 @@ class SiswaServices
                 'pernikahan' => $data['pernikahan'],
                 'agama' => $data['agama'],
             ]);
+
+            if (!$withInitialBilling) {
+                return $nis;
+            }
 
             $tagihanId = $this->generateTagihanId();
             Tagihan::query()->create([

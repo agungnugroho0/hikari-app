@@ -18,9 +18,12 @@ class PendaftaranSiswaBaru extends Component
 
     public bool $submitted = false;
 
+    public bool $maching = false;
+
     public function mount(): void
     {
-        $this->form->setCurrentClassFromSettings();
+        $this->maching = request()->routeIs('admin.siswa-maching');
+        $this->setInitialClass();
         $this->form->pernikahan = 'single';
     }
 
@@ -32,7 +35,12 @@ class PendaftaranSiswaBaru extends Component
             return;
         }
 
-        $this->form->storePublic();
+        if ($this->maching) {
+            $this->form->storeMaching();
+        } else {
+            $this->form->storePublic();
+        }
+
         $this->submitted = true;
     }
 
@@ -58,9 +66,20 @@ class PendaftaranSiswaBaru extends Component
             'wa_wali',
             'agama',
         ]);
-        $this->form->setCurrentClassFromSettings();
+        $this->setInitialClass();
         $this->form->pernikahan = 'single';
         $this->form->submittedNis = null;
+    }
+
+    protected function setInitialClass(): void
+    {
+        if ($this->maching) {
+            $this->form->setMachingClass();
+
+            return;
+        }
+
+        $this->form->setCurrentClassFromSettings();
     }
 
     public function render()

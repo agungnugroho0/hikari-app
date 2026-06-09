@@ -110,6 +110,11 @@ class SiswaForm extends Form
         $this->id_kelas = (string) ($this->services->currentClassId() ?? '');
     }
 
+    public function setMachingClass(): void
+    {
+        $this->id_kelas = '10';
+    }
+
     public function update()
     {
         $this->validate($this->updateRules(), $this->updateMessages(), $this->updateAttributes());
@@ -224,6 +229,33 @@ class SiswaForm extends Form
 
         $nis = $this->services->createPublic([
             'id_kelas' => $this->id_kelas,
+            'foto' => $fotoPath,
+            'nama_lengkap' => $this->nama_lengkap,
+            'panggilan' => $this->panggilan,
+            'tgl_lahir' => $this->tgl_lahir,
+            'gender' => $this->gender,
+            'tempat_lhr' => $this->tempat_lhr,
+            'alamat' => $this->alamat,
+            'wa' => $this->wa,
+            'wa_wali' => $this->wa_wali,
+            'pernikahan' => $this->pernikahan,
+            'agama' => $this->agama,
+        ]);
+
+        $this->submittedNis = $nis;
+
+        return $nis;
+    }
+
+    public function storeMaching(): string
+    {
+        $this->setMachingClass();
+        $this->validate($this->publicRules(), $this->publicMessages());
+
+        $this->alamat = $this->buildAlamat();
+        $fotoPath = $this->foto ? $this->foto->store('foto', 'public') : null;
+
+        $nis = $this->services->createMaching([
             'foto' => $fotoPath,
             'nama_lengkap' => $this->nama_lengkap,
             'panggilan' => $this->panggilan,

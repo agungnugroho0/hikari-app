@@ -34,6 +34,7 @@ Route::get('/pendaftaran-siswa-baru', PendaftaranSiswaBaru::class)->name('public
 Route::middleware(['auth', 'force.password.change', 'akses:admin'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('pages::dashboard');
     Route::get('/siswa', Siswa::class)->name('pages::siswa');
+    Route::get('/siswa/maching', PendaftaranSiswaBaru::class)->name('admin.siswa-maching');
     Route::get('/jobfair', Jobfair::class)->name('pages::jobfair');
     Route::get('/nafuda/{nis}', [NafudaController::class, 'download'])->name('pdf');
     Route::get('/staff', Staff::class)->name('pages::staff');

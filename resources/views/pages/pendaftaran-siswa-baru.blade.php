@@ -3,7 +3,7 @@
         <div class="mb-6 flex items-center justify-between gap-4">
             <div>
                 {{-- <p class="text-xs font-semibold uppercase tracking-[0.28em] text-red-900/60">Pendaftaran Publik</p> --}}
-                <h1 class="mt-2 text-3xl font-semibold text-neutral-900">Form Siswa Baru</h1>
+                <h1 class="mt-2 text-3xl font-semibold text-neutral-900">{{ $maching ? 'Form Maching' : 'Form Siswa Baru' }}</h1>
                 {{-- <p class="mt-2 max-w-2xl text-sm text-neutral-600">
                     Isi data siswa baru di bawah ini. Data akan langsung masuk ke sistem dan status siswa dibuat aktif.
                 </p> --}}
@@ -19,7 +19,7 @@
             <section class="rounded-[28px] border border-emerald-200 bg-white p-6 shadow-sm">
                 <div class="rounded-3xl bg-emerald-50 p-5">
                     <p class="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-700">Pendaftaran Berhasil</p>
-                    <h2 class="mt-2 text-2xl font-semibold text-neutral-900">Data siswa baru sudah tersimpan.</h2>
+                    <h2 class="mt-2 text-2xl font-semibold text-neutral-900">{{ $maching ? 'Data siswa Maching sudah tersimpan.' : 'Data siswa baru sudah tersimpan.' }}</h2>
                     <p class="mt-2 text-sm text-neutral-600">
                         NIS yang dibuat untuk pendaftar ini adalah <span class="font-semibold text-neutral-900">{{ $form->submittedNis }}</span>.
                     </p>
@@ -194,7 +194,7 @@
 
                     <button type="submit"
                         class="inline-flex min-h-11 items-center justify-center rounded-2xl bg-red-900 px-5 py-2 text-sm font-semibold text-white transition hover:bg-red-800">
-                        Kirim Pendaftaran
+                        {{ $maching ? 'Simpan Maching' : 'Kirim Pendaftaran' }}
                     </button>
                 </div>
             </form>

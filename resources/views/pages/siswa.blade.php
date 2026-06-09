@@ -27,8 +27,13 @@
 
             <div class="space-y-3">
                 <div>
-                    <h1 class="text-2xl font-bold text-neutral-900">Data Siswa</h1>
-                    {{-- <p class="text-sm text-neutral-600">Grafik kelulusan, grafik absensi per kelas per bulan, dan export laporan.</p> --}}
+                    <div class="flex items-center justify-between gap-3">
+                        <h1 class="text-2xl font-bold text-neutral-900">DAFTAR SISWA</h1>
+                        <a href="{{ route('admin.siswa-maching') }}" wire:navigate
+                            class="inline-flex min-h-9 items-center justify-center bg-red-900 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-red-800">
+                            + Maching
+                        </a>
+                    </div>
                 </div>
 
                 <div class="flex flex-col gap-2">
