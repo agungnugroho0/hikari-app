@@ -39,17 +39,18 @@ class Staff extends Authenticatable
 
     protected static function generatePrefixedId(string $prefix, string $modelClass, string $column): string
     {
-        $latest = $modelClass::query()
+        $maxNumber = (int) $modelClass::query()
             ->where($column, 'like', $prefix.'%')
-            ->orderBy($column, 'desc')
+            ->selectRaw("MAX(CAST(SUBSTRING($column, ?) AS UNSIGNED)) as max_number", [strlen($prefix) + 1])
             ->lockForUpdate()
-            ->first();
+            ->value('max_number');
 
-        $nextNumber = $latest
-            ? ((int) substr($latest->{$column}, strlen($prefix))) + 1
-            : 1;
+        do {
+            $maxNumber++;
+            $id = $prefix.str_pad((string) $maxNumber, 3, '0', STR_PAD_LEFT);
+        } while ($modelClass::query()->where($column, $id)->exists());
 
-        return $prefix.str_pad((string) $nextNumber, 3, '0', STR_PAD_LEFT);
+        return $id;
     }
 
     public function kelas()
