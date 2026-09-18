@@ -34,11 +34,6 @@
                         class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base   hover:text-gray-800 group">
                         <span class="ms-3">Siswa</span>
                     </a>
-                    {{-- <a href="/tes" wire:navigate class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group"> --}}
-                    {{-- <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/></svg> --}}
-                    {{-- <span class="flex-1 ms-3 whitespace-nowrap">Kanban</span> --}}
-                    {{-- <span class="bg-neutral-secondary-medium border border-default-medium text-heading text-xs font-medium px-1.5 py-0.5 rounded-sm">Pro</span> --}}
-                    {{-- </a> --}}
                 </li>
                 <li>
                     <a href="{{ 'jobfair' }}" wire:navigate
@@ -65,12 +60,12 @@
                     </a>
                 </li>
                 
-                <li>
+                {{-- <li>
                     <a href="{{ 'finance' }}" wire:navigate
                         class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
                         <span class="ms-3">Finance</span>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="{{ 'dokumen' }}" wire:navigate
                         class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
