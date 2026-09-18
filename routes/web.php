@@ -39,7 +39,7 @@ Route::middleware(['auth', 'force.password.change', 'akses:admin'])->group(funct
     Route::get('/nafuda/{nis}', [NafudaController::class, 'download'])->name('pdf');
     Route::get('/staff', Staff::class)->name('pages::staff');
     Route::get('/laporan', Laporan::class)->name('pages::laporan');
-    Route::get('/finance', Finance::class)->name('pages::finance');
+    // Route::get('/finance', Finance::class)->name('pages::finance');
     Route::get('/dokumen', Dokumen::class)->name('pages::dokumen');
     Route::get('/kelas', Kelas::class)->name('kelas');
     Route::get('/so', So::class)->name('so');

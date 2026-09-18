@@ -8,10 +8,10 @@
             </div>
             <div class="mt-3 flex flex-wrap gap-2 md:mt-0 md:justify-end">
 
-                <button wire:target.attr="disabled" wire:click="absen({{ $s->nis }}, 'h')"
+                {{-- <button wire:target.attr="disabled" wire:click="absen({{ $s->nis }}, 'h')"
                     class="rounded-xl bg-emerald-700 px-3 py-2 text-sm font-medium text-white transition hover:bg-emerald-600 active:bg-emerald-800">
                     Hadir
-                </button>
+                </button> --}}
 
                 <button wire:target.attr="disabled" wire:click="absen({{ $s->nis }}, 'm')"
                     class="rounded-xl bg-sky-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-sky-500 active:bg-sky-700">
