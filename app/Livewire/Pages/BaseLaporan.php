@@ -386,6 +386,56 @@ abstract class BaseLaporan extends Component
         ];
     }
 
+    #[Computed]
+    public function attendanceDetails(): Collection
+    {
+        if ($this->restrictedWithoutClass()) {
+            return collect();
+        }
+
+        $startDate = Carbon::create($this->year, $this->month, 1)->startOfMonth();
+        $endDate = $startDate->copy()->endOfMonth();
+
+        $attendanceTotals = DB::table('absen')
+            ->select('nis')
+            ->selectRaw("SUM(CASE WHEN LOWER(ket) = 'h' THEN 1 ELSE 0 END) as hadir")
+            ->selectRaw("SUM(CASE WHEN LOWER(ket) = 'i' THEN 1 ELSE 0 END) as ijin")
+            ->selectRaw("SUM(CASE WHEN LOWER(ket) = 's' THEN 1 ELSE 0 END) as sakit")
+            ->selectRaw("SUM(CASE WHEN LOWER(ket) = 'm' THEN 1 ELSE 0 END) as mensetsu")
+            ->selectRaw("SUM(CASE WHEN LOWER(ket) = 'a' THEN 1 ELSE 0 END) as alfa")
+            ->whereBetween('tgl', [$startDate->toDateString(), $endDate->toDateString()])
+            ->groupBy('nis');
+
+        return DB::table('core')
+            ->leftJoin('detail_siswa', 'detail_siswa.nis', '=', 'core.nis')
+            ->leftJoinSub($attendanceTotals, 'attendance_totals', fn ($join) => $join->on('attendance_totals.nis', '=', 'core.nis'))
+            ->where('core.status', 'siswa')
+            ->when($this->selectedClassId, fn ($query) => $query->where('core.id_kelas', $this->selectedClassId))
+            ->select('core.nis', 'detail_siswa.nama_lengkap')
+            ->selectRaw('COALESCE(attendance_totals.hadir, 0) as hadir')
+            ->selectRaw('COALESCE(attendance_totals.ijin, 0) as ijin')
+            ->selectRaw('COALESCE(attendance_totals.sakit, 0) as sakit')
+            ->selectRaw('COALESCE(attendance_totals.mensetsu, 0) as mensetsu')
+            ->selectRaw('COALESCE(attendance_totals.alfa, 0) as alfa')
+            ->orderBy('detail_siswa.nama_lengkap')
+            ->orderBy('core.nis')
+            ->get()
+            ->map(function (object $student) {
+                $student->hadir = (int) $student->hadir;
+                $student->ijin = (int) $student->ijin;
+                $student->sakit = (int) $student->sakit;
+                $student->mensetsu = (int) $student->mensetsu;
+                $student->alfa = (int) $student->alfa;
+
+                $totalAttendances = $student->hadir + $student->ijin + $student->sakit + $student->mensetsu + $student->alfa;
+                $student->percentage = $totalAttendances > 0
+                    ? round(($student->hadir / $totalAttendances) * 100, 1)
+                    : 0;
+
+                return $student;
+            });
+    }
+
     protected function buildMonthlySeries(Collection $rows): array
     {
         return collect(range(1, 12))

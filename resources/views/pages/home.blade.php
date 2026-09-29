@@ -38,7 +38,6 @@
                 </div>
 
                 <label class="flex w-full flex-col gap-1 text-sm sm:w-40">
-                    <span class="font-medium text-neutral-700">Tahun</span>
                     <select wire:model.live="year" class="rounded-2xl border border-neutral-300 px-4 py-3 text-sm text-neutral-900">
                         @foreach ($this->availableYears as $availableYear)
                             <option value="{{ $availableYear }}">{{ $availableYear }}</option>
@@ -54,7 +53,7 @@
             </div>
         </article>
 
-        <article class="rounded-[28px] border border-neutral-200 bg-white p-4 shadow-sm sm:p-5">
+        {{-- <article class="rounded-[28px] border border-neutral-200 bg-white p-4 shadow-sm sm:p-5">
             <div>
                 <h2 class="text-lg font-semibold text-neutral-900">Pembuatan SP</h2>
                 <p class="mt-1 text-sm text-neutral-500">Pilih siswa lalu cetak SP1 atau SP2 dengan cepat.</p>
@@ -100,7 +99,7 @@
                     SP hanya tersedia untuk siswa di kelas Anda dan dibatasi pada SP1 serta SP2.
                 </div>
             </div>
-        </article>
+        </article> --}}
     </section>
 
     <script type="application/json" id="sensei-home-chart-payload">@json($this->homePayload)</script>

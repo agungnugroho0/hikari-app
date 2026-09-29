@@ -20,7 +20,9 @@
     <div class="p-4 sm:mx-24 sm:flex">
         <x-nav-bar class=""></x-nav-bar>
         <div class="p-4 border-r-2 border-default w-full">
+            <livewire:announcement-center />
             {{ $slot }}
+            <p class="text-gray-500 text-xs mt-5"> © 2026 All Right Reserved</p>
         </div>
     </div>
 

@@ -79,6 +79,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('pages::pengumuman') }}" wire:navigate
+                        class="data-current:font-bold data-current:text-red-900 data-current:border-l-2 flex items-center px-2 py-1.5 text-body-subtle hover:rounded-r-base hover:text-gray-800 group">
+                        <span class="ms-3">Pengumuman</span>
+                    </a>
+                </li>
+                <li>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button 

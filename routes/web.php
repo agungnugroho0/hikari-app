@@ -7,6 +7,7 @@ use App\Http\Controllers\StudentDocumentController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Pages\daftarSiswaGuru;
 use App\Livewire\Pages\Dashboard;
+use App\Livewire\Pages\Announcements;
 use App\Livewire\Pages\Dokumen;
 use App\Livewire\Pages\Finance;
 use App\Livewire\Pages\Home;
@@ -33,6 +34,7 @@ Route::get('/pendaftaran-siswa-baru', PendaftaranSiswaBaru::class)->name('public
 
 Route::middleware(['auth', 'force.password.change', 'akses:admin'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('pages::dashboard');
+    Route::get('/pengumuman', Announcements::class)->name('pages::pengumuman');
     Route::get('/siswa', Siswa::class)->name('pages::siswa');
     Route::get('/siswa/maching', PendaftaranSiswaBaru::class)->name('admin.siswa-maching');
     Route::get('/jobfair', Jobfair::class)->name('pages::jobfair');
@@ -43,7 +45,6 @@ Route::middleware(['auth', 'force.password.change', 'akses:admin'])->group(funct
     Route::get('/dokumen', Dokumen::class)->name('pages::dokumen');
     Route::get('/kelas', Kelas::class)->name('kelas');
     Route::get('/so', So::class)->name('so');
-    Route::get('/laporan/formulir-nilai', [ReportController::class, 'monthlyScoreSheet'])->name('reports.monthly-score');
     Route::get('/laporan/absensi', [ReportController::class, 'monthlyAttendanceSheet'])->name('reports.attendance');
     Route::get('/billing-statement/{nis}', [BillingStatementController::class, 'download'])->name('billing.statement');
     Route::get('/dokumen/{type}/{nis}', [StudentDocumentController::class, 'download'])->name('documents.download');

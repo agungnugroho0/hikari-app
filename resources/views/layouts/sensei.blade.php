@@ -19,13 +19,14 @@
 <body>
     <main class="min-h-screen bg-neutral-100">
         <div class="mx-auto w-full max-w-6xl px-3 py-4 sm:px-4 sm:py-6 lg:px-6">
+            <livewire:announcement-center />
             {{ $slot }}
+            <p class="text-gray-500 text-xs"> © 2026 All Right Reserved</p>
         </div>
     </main>
     @livewireScripts
     @stack('scripts')
     {{-- <script src="../path/to/flowbite/dist/flowbite.min.js"></script> --}}
-
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 </html>

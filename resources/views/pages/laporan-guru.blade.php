@@ -9,7 +9,7 @@
 
     <x-menu-bar />
 
-    <section class="grid gap-3 sm:grid-cols-3">
+    {{-- <section class="grid gap-3 sm:grid-cols-3">
         <x-stat-card
             title="Tahun"
             :value="$year"
@@ -18,7 +18,7 @@
         <x-stat-card
             title="Kelas"
             :value="$sensei?->kelas?->nama_kelas ?? '-'"
-            description="Laporan dibatasi untuk kelas yang Anda ampu"
+            description=" "
         />
 
         <x-stat-card
@@ -26,19 +26,18 @@
             :value="$this->totalGraduationChart['year_total']"
             :description="'Rekap siswa lulus pada tahun ' . $year"
         />
-    </section>
+    </section> --}}
 
     <section class="rounded-[28px] border border-neutral-200 bg-white p-4 shadow-sm sm:p-5">
         <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
             <div>
                 <p class="text-xs font-semibold uppercase tracking-[0.24em] text-red-900/70">Laporan Guru</p>
                 <h1 class="mt-1 text-2xl font-bold text-neutral-900">Laporan kelas {{ $sensei?->kelas?->nama_kelas ?? '-' }}</h1>
-                <p class="mt-1 text-sm text-neutral-500">Isi laporan mengikuti halaman admin, tetapi hanya menampilkan data kelas yang Anda ampu.</p>
             </div>
 
             <div class="grid gap-3 md:grid-cols-3 xl:grid-cols-4">
                 <label class="flex flex-col gap-1 text-sm">
-                    <span class="font-medium text-neutral-700">Tahun grafik</span>
+                    {{-- <span class="font-medium text-neutral-700">Tahun grafik</span> --}}
                     <select wire:model.live="year" class="rounded-2xl border border-neutral-300 px-4 py-3 text-sm text-neutral-900">
                         @foreach ($this->availableYears as $availableYear)
                             <option value="{{ $availableYear }}">{{ $availableYear }}</option>
@@ -47,7 +46,7 @@
                 </label>
 
                 <label class="flex flex-col gap-1 text-sm">
-                    <span class="font-medium text-neutral-700">Kelas</span>
+                    {{-- <span class="font-medium text-neutral-700">Kelas</span> --}}
                     <input
                         type="text"
                         value="{{ $this->classGraduationChart['class_name'] }}"
@@ -57,7 +56,7 @@
                 </label>
 
                 <label class="flex flex-col gap-1 text-sm">
-                    <span class="font-medium text-neutral-700">Bulan</span>
+                    {{-- <span class="font-medium text-neutral-700">Bulan</span> --}}
                     <select wire:model.live="month" class="rounded-2xl border border-neutral-300 px-4 py-3 text-sm text-neutral-900">
                         @for ($monthNumber = 1; $monthNumber <= 12; $monthNumber++)
                             <option value="{{ $monthNumber }}">
@@ -68,12 +67,8 @@
                 </label>
 
                 <div class="flex flex-col gap-1 text-sm">
-                    <span class="font-medium text-neutral-700">Export</span>
+                    {{-- <span class="font-medium text-neutral-700">Export</span> --}}
                     <div class="grid gap-2">
-                        <a href="{{ route('sensei.reports.monthly-score', ['year' => $year, 'month' => $month]) }}"
-                            class="inline-flex min-h-11 items-center justify-center rounded-2xl bg-red-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800">
-                            Cetak Formulir Nilai
-                        </a>
                         <a href="{{ route('sensei.reports.attendance', ['year' => $year, 'month' => $month, 'class_id' => $selectedClassId]) }}"
                             class="inline-flex min-h-11 items-center justify-center rounded-2xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600">
                             Export Absensi Excel
@@ -84,7 +79,7 @@
         </div>
     </section>
 
-    <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    {{-- <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         @foreach ($this->attendanceChart['recap'] as $attendanceRecap)
             <article class="rounded-[24px] border border-neutral-200 bg-white p-4 shadow-sm">
                 <p class="text-sm text-neutral-500">{{ $attendanceRecap['label'] }}</p>
@@ -94,7 +89,7 @@
                 </div>
             </article>
         @endforeach
-    </section>
+    </section> --}}
 
     <section class="rounded-[28px] border border-neutral-200 bg-white p-5 shadow-sm">
         <div class="mb-5">
@@ -105,8 +100,8 @@
             <article class="rounded-3xl bg-neutral-50 p-4">
                 <div class="mb-4 flex items-baseline justify-between">
                     <div>
-                        <h3 class="font-semibold text-neutral-900">Semua kelas yang diampu</h3>
-                        <p class="text-sm text-neutral-500">Rekapan jumlah lulusan per bulan selama {{ $year }}</p>
+                        <h3 class="font-semibold text-neutral-900">Semua Kelas</h3>
+                        <p class="text-sm text-neutral-500">Rekapan jumlah lulusan {{ $year }}</p>
                     </div>
                     <p class="text-sm font-medium text-neutral-700">{{ $this->totalGraduationChart['year_total'] }} siswa</p>
                 </div>
@@ -120,7 +115,7 @@
                 <div class="mb-4 flex items-baseline justify-between">
                     <div>
                         <h3 class="font-semibold text-neutral-900">Kelas {{ $this->classGraduationChart['class_name'] }}</h3>
-                        <p class="text-sm text-neutral-500">Jumlah kelulusan siswa per tanggal pada bulan {{ $this->classGraduationChart['selected_month_name'] }} {{ $year }}</p>
+                        <p class="text-sm text-neutral-500">Jumlah kelulusan siswa pada bulan {{ $this->classGraduationChart['selected_month_name'] }} {{ $year }}</p>
                     </div>
                     <p class="text-sm font-medium text-neutral-700">{{ $this->classGraduationChart['year_total'] }} siswa</p>
                 </div>
@@ -155,6 +150,52 @@
                     <canvas id="attendance-recap-chart"></canvas>
                 </div>
             </article>
+        </div>
+    </section>
+
+    <section class="rounded-[28px] border border-neutral-200 bg-white p-5 shadow-sm">
+        <div class="mb-4">
+            <h2 class="text-lg font-semibold text-neutral-900">Detail Presensi Siswa</h2>
+            <p class="text-sm text-neutral-500">
+                {{ $this->attendanceChart['class_name'] }} · {{ $this->attendanceChart['selected_month_name'] }} {{ $year }}
+            </p>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[760px] text-left text-sm">
+                <thead class="border-b border-neutral-200 bg-neutral-50 text-xs uppercase text-neutral-600">
+                    <tr>
+                        <th scope="col" class="px-3 py-3">No</th>
+                        <th scope="col" class="px-3 py-3">NIS</th>
+                        <th scope="col" class="px-3 py-3">Nama</th>
+                        <th scope="col" class="px-3 py-3 text-right">Persentase</th>
+                        <th scope="col" class="px-3 py-3 text-right">Hadir</th>
+                        <th scope="col" class="px-3 py-3 text-right">Izin</th>
+                        <th scope="col" class="px-3 py-3 text-right">Sakit</th>
+                        <th scope="col" class="px-3 py-3 text-right">Mensetsu</th>
+                        <th scope="col" class="px-3 py-3 text-right">Alfa</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-neutral-100">
+                    @forelse ($this->attendanceDetails as $student)
+                        <tr class="text-neutral-700">
+                            <td class="px-3 py-3">{{ $loop->iteration }}</td>
+                            <td class="px-3 py-3 font-medium text-neutral-900">{{ $student->nis }}</td>
+                            <td class="px-3 py-3">{{ $student->nama_lengkap ?? '-' }}</td>
+                            <td class="px-3 py-3 text-right font-medium">{{ number_format($student->percentage, 1) }}%</td>
+                            <td class="px-3 py-3 text-right">{{ $student->hadir }}</td>
+                            <td class="px-3 py-3 text-right">{{ $student->ijin }}</td>
+                            <td class="px-3 py-3 text-right">{{ $student->sakit }}</td>
+                            <td class="px-3 py-3 text-right">{{ $student->mensetsu }}</td>
+                            <td class="px-3 py-3 text-right">{{ $student->alfa }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="9" class="px-3 py-8 text-center text-neutral-500">Tidak ada siswa aktif pada kelas ini.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </section>
 </div>
