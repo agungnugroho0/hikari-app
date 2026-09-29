@@ -66,7 +66,7 @@
         </div>
     </section>
 
-    <section class="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
+    {{-- <section class="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
         @foreach ($this->attendanceChart['recap'] as $attendanceRecap)
             <article class="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm">
                 <p class="text-sm text-neutral-500">{{ $attendanceRecap['label'] }}</p>
@@ -76,13 +76,12 @@
                 </div>
             </article>
         @endforeach
-    </section>
+    </section> --}}
 
     <section class="rounded-xl  border-neutral-200 bg-white p-5 shadow-sm">
         <div class="mb-5">
             <div>
                 <h2 class="text-lg font-semibold text-neutral-900">Grafik Kelulusan</h2>
-                {{-- <p class="text-sm text-neutral-500">Semua grafik berbentuk line chart berdasarkan data `list_lolos`.</p> --}}
             </div>
         </div>
 
