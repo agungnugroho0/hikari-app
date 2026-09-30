@@ -26,7 +26,7 @@
                     <option value="">Semua user</option>
                     <option value="admin">Admin</option>
                     <option value="guru">Guru</option>
-                    {{-- <option value="dev">Developer</option> --}}
+                    <option value="dev">Developer</option>
                 </select>
             </div>
             <button type="submit" class="rounded bg-red-900 px-4 py-2 font-medium text-white hover:bg-red-800">Terbitkan</button>

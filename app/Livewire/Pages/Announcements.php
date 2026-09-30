@@ -8,7 +8,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Layout('layouts.admin')]
+#[Layout('layouts.developer')]
 #[Title('Pengumuman')]
 class Announcements extends Component
 {
@@ -20,7 +20,7 @@ class Announcements extends Component
 
     public function publish(): void
     {
-        abort_unless(Auth::user()?->akses === 'admin', 403);
+        abort_unless(Auth::user()?->akses === 'dev', 403);
 
         $data = $this->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -40,7 +40,7 @@ class Announcements extends Component
 
     public function togglePublication(int $announcementId): void
     {
-        abort_unless(Auth::user()?->akses === 'admin', 403);
+        abort_unless(Auth::user()?->akses === 'dev', 403);
 
         $announcement = Announcement::findOrFail($announcementId);
         $announcement->update([
@@ -50,7 +50,7 @@ class Announcements extends Component
 
     public function delete(int $announcementId): void
     {
-        abort_unless(Auth::user()?->akses === 'admin', 403);
+        abort_unless(Auth::user()?->akses === 'dev', 403);
 
         Announcement::findOrFail($announcementId)->delete();
     }

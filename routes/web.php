@@ -5,9 +5,12 @@ use App\Http\Controllers\NafudaController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentDocumentController;
 use App\Livewire\Auth\Login;
+use App\Livewire\Pages\AdminAttendance;
 use App\Livewire\Pages\Announcements;
 use App\Livewire\Pages\daftarSiswaGuru;
 use App\Livewire\Pages\Dashboard;
+use App\Livewire\Pages\DeveloperDashboard;
+use App\Livewire\Pages\DeveloperStaff;
 use App\Livewire\Pages\Dokumen;
 use App\Livewire\Pages\Finance;
 use App\Livewire\Pages\Home;
@@ -34,12 +37,12 @@ Route::get('/pendaftaran-siswa-baru', PendaftaranSiswaBaru::class)->name('public
 
 Route::middleware(['auth', 'force.password.change', 'akses:admin'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('pages::dashboard');
-    Route::get('/pengumuman', Announcements::class)->name('pages::pengumuman');
     Route::get('/siswa', Siswa::class)->name('pages::siswa');
     Route::get('/siswa/maching', PendaftaranSiswaBaru::class)->name('admin.siswa-maching');
     Route::get('/jobfair', Jobfair::class)->name('pages::jobfair');
     Route::get('/nafuda/{nis}', [NafudaController::class, 'download'])->name('pdf');
     Route::get('/staff', Staff::class)->name('pages::staff');
+    Route::get('/absensi', AdminAttendance::class)->name('pages::attendance');
     Route::get('/laporan', Laporan::class)->name('pages::laporan');
     // Route::get('/finance', Finance::class)->name('pages::finance');
     Route::get('/dokumen', Dokumen::class)->name('pages::dokumen');
@@ -63,9 +66,9 @@ Route::middleware(['auth', 'force.password.change', 'akses:guru'])->group(functi
     // Route::get('/sensei/siswa',function(){dd('ini siswa');})->name('siswa');
 });
 Route::middleware(['auth', 'akses:dev'])->group(function () {
-    Route::get('/dev/dashboard', function () {
-        dd('berhasil dev');
-    });
+    Route::get('/dev/dashboard', DeveloperDashboard::class)->name('dev.dashboard');
+    Route::get('/dev/pengumuman', Announcements::class)->name('dev.announcements');
+    Route::get('/dev/staff', DeveloperStaff::class)->name('dev.staff');
 });
 
 Route::post('/logout', function () {
