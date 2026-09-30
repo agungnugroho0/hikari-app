@@ -2,11 +2,12 @@ import "./bootstrap";
 import "./home";
 import "flowbite";
 import $ from "jquery";
-import "select2";
+import select2 from "select2";
 import Toastify from "toastify-js";
 import { Html5Qrcode } from "html5-qrcode";
 
 window.jQuery = window.$ = $;
+select2(window, $);
 window.Html5Qrcode = Html5Qrcode;
 window.Toastify = Toastify;
 
@@ -364,17 +365,6 @@ window.initStudentSelect2 = async function initStudentSelect2() {
         return;
     }
 
-    if (!select.dataset.livewireSyncBound) {
-        select.addEventListener("change", () => {
-            const componentElement = select.closest('[wire\\:id]');
-            const componentId = componentElement ? componentElement.getAttribute("wire:id") : null;
-            const component = componentId && window.Livewire ? window.Livewire.find(componentId) : null;
-
-            component?.set("selectedNis", select.value);
-        });
-        select.dataset.livewireSyncBound = "true";
-    }
-
     if (!window.Livewire) {
         return;
     }
@@ -396,7 +386,7 @@ window.initStudentSelect2 = async function initStudentSelect2() {
     }
 
     if ($select.hasClass("select2-hidden-accessible")) {
-        $select.off(".student-documents");
+        $select.off(".student-attendance");
         $select.select2("destroy");
     }
 
@@ -406,6 +396,9 @@ window.initStudentSelect2 = async function initStudentSelect2() {
     });
 
     $select.val(select.dataset.selectedNis || "").trigger("change.select2");
+    $select.on("change.student-attendance", function () {
+        component.set("selectedNis", this.value);
+    });
 };
 
 function bootFrontendCommands() {
