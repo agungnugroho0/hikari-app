@@ -149,6 +149,32 @@ class DeveloperManagementTest extends TestCase
         ]);
     }
 
+    public function test_attendance_id_generation_handles_more_than_three_digits(): void
+    {
+        $kelas = Kelas::create([
+            'id_kelas' => 'KLS902',
+            'nama_kelas' => 'Kelas Tes',
+        ]);
+        $student = Core::create([
+            'nis' => 'NIS-TEST-902',
+            'id_kelas' => $kelas->id_kelas,
+            'status' => 'siswa',
+        ]);
+
+        foreach (['999', '1000'] as $suffix) {
+            Absen::create([
+                'id_absen' => 'ABS20260419'.$suffix,
+                'nis' => $student->nis,
+                'tgl' => '2026-04-19',
+                'ket' => 'H',
+            ]);
+        }
+
+        $nextId = app(\App\Services\presensiService::class)->generateId('2026-04-19');
+
+        $this->assertSame('ABS202604191001', $nextId);
+    }
+
     private function createStaff(string $id, string $username, string $access): Staff
     {
         return Staff::create([

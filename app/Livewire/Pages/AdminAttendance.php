@@ -65,7 +65,7 @@ class AdminAttendance extends Component
             }
 
             Absen::create([
-                'id_absen' => $this->generateId($date),
+                'id_absen' => app(\App\Services\presensiService::class)->generateId($date),
                 'nis' => $validated['selectedNis'],
                 'tgl' => $date,
                 'ket' => self::STATUSES[$status],
@@ -101,16 +101,4 @@ class AdminAttendance extends Component
         ]);
     }
 
-    private function generateId(string $date): string
-    {
-        $prefix = 'ABS'.Carbon::parse($date)->format('Ymd');
-        $latestId = Absen::query()
-            ->where('id_absen', 'like', $prefix.'%')
-            ->orderByDesc('id_absen')
-            ->lockForUpdate()
-            ->value('id_absen');
-        $number = $latestId ? (int) substr($latestId, -3) + 1 : 1;
-
-        return $prefix.str_pad((string) $number, 3, '0', STR_PAD_LEFT);
-    }
 }

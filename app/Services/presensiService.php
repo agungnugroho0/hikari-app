@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Absen;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class presensiService
@@ -11,17 +12,15 @@ class presensiService
         private readonly FonnteWhatsAppService $whatsAppService
     ) {}
 
-    public function generateId()
+    public function generateId(?string $date = null): string
     {
-        $prefix = 'ABS'.date('Ymd');
-        $terbaru = Absen::where('id_absen', 'like', $prefix.'%')->lockForUpdate()->orderBy('id_absen', 'desc')->first();
-
-        if ($terbaru) {
-            $number = (int) substr($terbaru->id_absen, -3);
-            $number++;
-        } else {
-            $number = 1;
-        }
+        $prefix = 'ABS'.Carbon::parse($date ?? now())->format('Ymd');
+        $number = Absen::query()
+            ->where('id_absen', 'like', $prefix.'%')
+            ->lockForUpdate()
+            ->pluck('id_absen')
+            ->map(fn (string $id): int => (int) substr($id, strlen($prefix)))
+            ->max() + 1;
 
         return $prefix.str_pad($number, 3, '0', STR_PAD_LEFT);
     }
