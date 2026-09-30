@@ -100,5 +100,4 @@ class AdminAttendance extends Component
             'statusLabels' => array_flip(self::STATUSES),
         ]);
     }
-
 }
