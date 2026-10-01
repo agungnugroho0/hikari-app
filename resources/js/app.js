@@ -39,7 +39,8 @@ function initScanner() {
 
         html5QrCode.start(
             { facingMode: "environment" },
-            { fps: 10, qrbox: 250 },
+            // { fps: 10, qrbox: 250 },
+            { fps: 10},
             (decodedText) => {
                 if (!isScanning || !window.Livewire) return;
 
