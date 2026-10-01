@@ -4,14 +4,17 @@ import "flowbite";
 import $ from "jquery";
 import select2 from "select2";
 import Toastify from "toastify-js";
-import { Html5Qrcode } from "html5-qrcode";
+// import { Html5Qrcode } from "html5-qrcode";
+import QrScanner from "qr-scanner";
 
 window.jQuery = window.$ = $;
 select2(window, $);
-window.Html5Qrcode = Html5Qrcode;
+// window.Html5Qrcode = Html5Qrcode;
 window.Toastify = Toastify;
 
-let html5QrCode = null;
+let qrScanner = null;
+let qrScannerVideo = null;
+let scannerRestartTimer = null;
 let isScanning = false;
 let toastListenerBound = false;
 let reportListenerBound = false;
@@ -19,36 +22,52 @@ let reportListenerBound = false;
 function initScanner() {
     const startBtn = document.getElementById("start-btn");
     const stopBtn = document.getElementById("stop-btn");
+    const video = document.querySelector("#reader video");
 
-    if (!startBtn || !stopBtn) return;
+    if (!startBtn || !stopBtn || !video) return;
+
+    if (qrScanner && qrScannerVideo !== video) {
+        clearTimeout(scannerRestartTimer);
+        qrScanner.destroy();
+        qrScanner = null;
+        qrScannerVideo = null;
+        isScanning = false;
+    }
 
     const stopScanner = () => {
-        if (!html5QrCode || !isScanning) return;
+        clearTimeout(scannerRestartTimer);
+        scannerRestartTimer = null;
 
-        html5QrCode.stop().then(() => {
-            isScanning = false;
-            html5QrCode.clear();
-        });
+        if (!qrScanner || !isScanning) return;
+
+        qrScanner.stop();
+        isScanning = false;
     };
 
     const startScanner = () => {
         if (isScanning) return;
 
-        html5QrCode = new Html5Qrcode("reader");
-        isScanning = true;
-
-        html5QrCode.start(
-            { facingMode: "environment" },
-            // { fps: 10, qrbox: 250 },
-            { fps: 10},
-            (decodedText) => {
+        qrScanner ??= new QrScanner(
+            video,
+            (result) => {
                 if (!isScanning || !window.Livewire) return;
 
-                window.Livewire.dispatch("qr-scanned", { value: decodedText });
+                window.Livewire.dispatch("qr-scanned", { value: result.data });
                 stopScanner();
-                setTimeout(startScanner, 1000);
-            }
+                scannerRestartTimer = setTimeout(() => {
+                    scannerRestartTimer = null;
+                    startScanner();
+                }, 1000);
+            },
+            { preferredCamera: "environment", maxScansPerSecond: 10 }
         );
+        qrScannerVideo = video;
+
+        isScanning = true;
+        qrScanner.start().catch((error) => {
+            isScanning = false;
+            console.error("QR scanner failed to start", error);
+        });
     };
 
     startBtn.onclick = startScanner;

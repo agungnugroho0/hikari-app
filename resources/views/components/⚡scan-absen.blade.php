@@ -49,6 +49,8 @@ new class extends Component
     </div>
 
     <div class="flex justify-center">
-        <div id="reader" class="w-full max-w-sm overflow-hidden rounded-[28px] border border-neutral-200 bg-white p-3 shadow-sm"></div>
+        <div id="reader" class="w-full max-w-sm overflow-hidden rounded-[28px] border border-neutral-200 bg-white p-3 shadow-sm">
+            <video class="block w-full rounded-2xl" muted playsinline></video>
+        </div>
     </div>
 </div>
