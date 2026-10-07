@@ -18,6 +18,7 @@ let scannerRestartTimer = null;
 let isScanning = false;
 let toastListenerBound = false;
 let reportListenerBound = false;
+const rotatingPlaceholderTimers = new Map();
 
 function initScanner() {
     const startBtn = document.getElementById("start-btn");
@@ -375,6 +376,64 @@ function bindReportChartsCommand() {
     reportListenerBound = true;
 }
 
+function cleanupRotatingPlaceholders() {
+    for (const [input, state] of rotatingPlaceholderTimers.entries()) {
+        if (document.contains(input)) {
+            continue;
+        }
+
+        clearInterval(state.timer);
+        rotatingPlaceholderTimers.delete(input);
+    }
+}
+
+function initRotatingPlaceholders() {
+    cleanupRotatingPlaceholders();
+
+    document.querySelectorAll("[data-rotating-placeholder]").forEach((input) => {
+        if (rotatingPlaceholderTimers.has(input)) {
+            return;
+        }
+
+        let examples = [];
+        try {
+            examples = JSON.parse(input.dataset.rotatingPlaceholder || "[]");
+        } catch (error) {
+            console.error("Invalid rotating placeholder data", error);
+            return;
+        }
+
+        if (!Array.isArray(examples) || examples.length === 0) {
+            return;
+        }
+
+        let index = Math.max(0, examples.indexOf(input.getAttribute("placeholder")));
+        const changePlaceholder = () => {
+            if (!document.contains(input)) {
+                const state = rotatingPlaceholderTimers.get(input);
+                if (state) clearInterval(state.timer);
+                rotatingPlaceholderTimers.delete(input);
+                return;
+            }
+
+            index = (index + 1) % examples.length;
+            input.classList.add("opacity-60");
+
+            setTimeout(() => {
+                if (!document.contains(input)) {
+                    return;
+                }
+
+                input.setAttribute("placeholder", examples[index]);
+                input.classList.remove("opacity-60");
+            }, 150);
+        };
+
+        const timer = setInterval(changePlaceholder, 3500);
+        rotatingPlaceholderTimers.set(input, { timer });
+    });
+}
+
 window.ensureJquery = () => Promise.resolve(window.jQuery);
 window.ensureSelect2 = () => Promise.resolve(window.jQuery.fn.select2);
 
@@ -426,11 +485,20 @@ function bootFrontendCommands() {
     bindToastCommand();
     bindReportChartsCommand();
     window.initStudentSelect2();
+    initRotatingPlaceholders();
 }
 
 document.addEventListener("DOMContentLoaded", bootFrontendCommands);
 document.addEventListener("livewire:navigated", bootFrontendCommands);
+document.addEventListener("livewire:navigating", () => {
+    for (const state of rotatingPlaceholderTimers.values()) {
+        clearInterval(state.timer);
+    }
+
+    rotatingPlaceholderTimers.clear();
+});
 document.addEventListener("livewire:init", () => {
     bindToastCommand();
     window.initStudentSelect2();
+    initRotatingPlaceholders();
 });

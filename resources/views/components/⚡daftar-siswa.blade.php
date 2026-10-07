@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 use Livewire\Attributes\Computed;
 use App\Livewire\Detailsiswa;
 use App\Services\SiswaServices;
+use App\Services\StudentNaturalLanguageSearch;
 use Livewire\Attributes\On;
 
 new class extends Component {
@@ -23,6 +24,13 @@ new class extends Component {
     public $status = 'siswa';
     public $selectedNis = null;
 
+    protected StudentNaturalLanguageSearch $naturalSearch;
+
+    public function boot(StudentNaturalLanguageSearch $naturalSearch): void
+    {
+        $this->naturalSearch = $naturalSearch;
+    }
+
     #[Computed]
     public function Siswa()
     {
@@ -34,14 +42,18 @@ new class extends Component {
             $query->where('id_kelas', $this->idKelas);
         }
 
-        $query->where('status', '=', $this->status);
+        $parsedSearch = $this->naturalSearch->parse((string) $this->search);
+
+        if (!$this->naturalSearch->hasStatusFilter($parsedSearch)) {
+            $query->where('status', '=', $this->status);
+        }
 
         if (!empty($this->search)) {
-            $query->where(function ($q) {
-                $q->where('nis', 'like', "%{$this->search}%")->orWhereHas('detail', function ($sub) {
-                    $sub->where('nama_lengkap', 'like', "%{$this->search}%");
-                });
-            });
+            if (($parsedSearch['mode'] ?? null) === 'structured') {
+                $this->naturalSearch->apply($query, $parsedSearch);
+            } else {
+                $this->naturalSearch->applyTextSearch($query, (string) $this->search);
+            }
         }
 
         if ($this->status === 'siswa') {
@@ -71,6 +83,14 @@ new class extends Component {
         return $query->paginate(25);
     }
 
+    #[Computed]
+    public function SearchInfo(): ?array
+    {
+        return $this->buildSearchInfo(
+            $this->naturalSearch->parse((string) $this->search)
+        );
+    }
+
     #[On('siswa-updated')]
     public function refreshList()
     {
@@ -78,6 +98,11 @@ new class extends Component {
     }
 
     public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedStatus()
     {
         $this->resetPage();
     }
@@ -106,6 +131,19 @@ new class extends Component {
         $this->dispatch('siswa-deleted', nis: $nis)->to(Detailsiswa::class);
         $this->dispatch('tutup', message: 'Data siswa berhasil dihapus.');
     }
+
+    protected function buildSearchInfo(array $parsedSearch): ?array
+    {
+        if (($parsedSearch['mode'] ?? null) !== 'structured') {
+            return null;
+        }
+
+        return [
+            'summary' => $parsedSearch['summary'] ?? null,
+            'notices' => $parsedSearch['notices'] ?? [],
+            'filters' => $parsedSearch['filters'] ?? [],
+        ];
+    }
 };
 ?>
 
@@ -121,6 +159,15 @@ new class extends Component {
             </button>
         @endforeach
     </div>
+
+    @if ($this->searchInfo)
+        <div class="border-b border-amber-100 bg-amber-50 px-2 py-2 text-xs text-amber-950">
+            <p>{{ $this->searchInfo['summary'] }}</p>
+            @foreach ($this->searchInfo['notices'] as $notice)
+                <p class="mt-1 text-amber-700">{{ $notice }}</p>
+            @endforeach
+        </div>
+    @endif
 
     <div class="flex-1 space-y-1 overflow-y-auto pt-2">
         @forelse ($this->siswa as $s)

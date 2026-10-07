@@ -40,8 +40,9 @@
                     <livewire:select-kelas />
 
                     <input type="search" wire:model.live.debounce.250ms="search"
+                        data-rotating-placeholder='["Cari siswa berdasarkan nama...","Coba: \"cari siswa di Semarang\"","Coba: \"cari siswa status cuti\"","Coba: \"cari siswa bernama Ahmad\"","Coba: \"cari siswa dari Desa Kendal\""]'
                         class="w-full border border-neutral-200 bg-white px-3 py-2.5 text-sm text-neutral-800 outline-none transition focus:border-amber-900"
-                        placeholder="Cari NIS atau nama siswa" />
+                        placeholder="Cari siswa berdasarkan nama..." />
                 </div>
             </div>
 
