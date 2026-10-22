@@ -4,6 +4,7 @@ namespace App\Livewire\Pages;
 
 use App\Models\JobFairModels;
 use App\Models\ListLolos;
+use App\Models\Schedule;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -109,12 +110,29 @@ class Dashboard extends Component
     }
 
     #[Computed]
+    public function scheduleEvents(): array
+    {
+        return Schedule::query()
+            ->orderBy('date')
+            ->get(['id_jadwal', 'title', 'date', 'method', 'note'])
+            ->map(fn (Schedule $schedule) => [
+                'id' => $schedule->id_jadwal,
+                'title' => $schedule->title,
+                'start' => $schedule->date->toIso8601String(),
+                'method' => $schedule->method,
+                'note' => $schedule->note,
+            ])
+            ->all();
+    }
+
+    #[Computed]
     public function dashboardPayload(): array
     {
         return [
             'series' => $this->yearlyGraduationChart['series'],
             'year' => $this->year,
             'jobOrderEvents' => $this->jobOrderEvents,
+            'scheduleEvents' => $this->scheduleEvents,
         ];
     }
 

@@ -23,6 +23,7 @@ use App\Livewire\Pages\Presensi;
 use App\Livewire\Pages\ProfilGuru;
 use App\Livewire\Pages\SendingOrganizer as So;
 use App\Livewire\Pages\Setelan;
+use App\Livewire\Pages\Schedule;
 use App\Livewire\Pages\Siswa;
 use App\Livewire\Pages\Staff;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,7 @@ Route::middleware(['auth', 'force.password.change', 'akses:admin'])->group(funct
     Route::get('/jobfair', Jobfair::class)->name('pages::jobfair');
     Route::get('/nafuda/{nis}', [NafudaController::class, 'download'])->name('pdf');
     Route::get('/staff', Staff::class)->name('pages::staff');
+    Route::get('/schedule', Schedule::class)->name('pages::schedule');
     Route::get('/absensi', AdminAttendance::class)->name('pages::attendance');
     Route::get('/laporan', Laporan::class)->name('pages::laporan');
     // Route::get('/finance', Finance::class)->name('pages::finance');

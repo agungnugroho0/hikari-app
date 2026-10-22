@@ -201,7 +201,18 @@
                         company: event.company,
                         soName: event.so_name,
                     },
-                }));
+                })).concat((payload.scheduleEvents || []).map((event) => ({
+                    id: `schedule-${event.id}`,
+                    title: event.title,
+                    start: event.start,
+                    backgroundColor: '#1e3a8a',
+                    borderColor: '#1e3a8a',
+                    textColor: '#ffffff',
+                    extendedProps: {
+                        method: event.method,
+                        note: event.note,
+                    },
+                })));
 
                 this.calendar = new window.FullCalendar.Calendar(element, {
                     initialView: 'dayGridMonth',
@@ -240,7 +251,9 @@
                     eventDidMount(info) {
                         const company = info.event.extendedProps.company || '';
                         const soName = info.event.extendedProps.soName || '';
-                        info.el.title = [info.event.title, company, soName].filter(Boolean).join(' | ');
+                        const method = info.event.extendedProps.method || '';
+                        const note = info.event.extendedProps.note || '';
+                        info.el.title = [info.event.title, company, soName, method, note].filter(Boolean).join(' | ');
                     },
                 });
 
