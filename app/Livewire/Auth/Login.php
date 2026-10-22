@@ -33,12 +33,18 @@ class Login extends Component
         {
             session()->regenerate();
 
+            $user = Auth::user();
+            if ($user instanceof Staff) {
+                \Illuminate\Support\Facades\DB::table('log_login')->updateOrInsert(
+                    ['id_staff' => $user->id_staff],
+                    ['last_login' => now('Asia/Jakarta')],
+                );
+            }
+
             // ini hanya digunakan jika ada 1 user akses (tidak multiuser)
             // return redirect()->intended('/dashboard');
 
             // ini digunakan untuk multiuser
-            $user = Auth::user();
-
             if ($user instanceof Staff && Hash::check('123456', $user->password)) {
                 return match ($user->akses) {
                     'admin' => redirect()->route('setelan'),
