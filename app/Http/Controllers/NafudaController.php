@@ -21,16 +21,6 @@ class NafudaController extends Controller
         $panggilan = trim((string) data_get($siswa, 'detail.panggilan', ''));
         $nama = trim((string) data_get($siswa, 'nama', $siswa->nis));
 
-        // $fontPath = public_path('fonts/Naganoshi.ttf');
-        // $fontFamily = 'kozminproregular';
-
-        // if (is_file($fontPath)) {
-        //     $registeredFont = \TCPDF_FONTS::addTTFfont($fontPath, 'TrueTypeUnicode', '', 96);
-        //     if ($registeredFont) {
-        //         $fontFamily = $registeredFont;
-        //     }
-        // }
-
         if (ob_get_length()) {
             ob_end_clean();
         }
@@ -73,12 +63,12 @@ class NafudaController extends Controller
         $pdf->write2DBarcode($siswa->nis, 'QRCODE,H', 110, 29, 17, 17, $qrStyle, 'N');
 
         if ($panggilan !== '') {
-            $pdf->SetFont('ipag', '', 28);
+            $pdf->SetFont('naganoshi', '', 28);
             $pdf->SetTextColor(0, 0, 0);
             $pdf->SetXY(37, 29);
             $pdf->MultiCell(70, 12, $panggilan, 0, 'L');
 
-            $pdf->SetFont('ipag', '', 28);
+            $pdf->SetFont('naganoshi', '', 28);
             $pdf->SetTextColor(255, 255, 255);
             $pdf->SetXY(129, 29);
             $pdf->MultiCell(70, 12, $panggilan, 0, 'L');
