@@ -9,6 +9,12 @@ class NafudaController extends Controller
 {
     public function download($nis)
     {
+        if (! defined('K_ALLOWED_PATHS')) {
+            define('K_ALLOWED_PATHS', [
+                '/mnt/nas',
+            ]);
+        }
+
         if (! class_exists(\TCPDF::class)) {
             require_once base_path('vendor/tecnickcom/tcpdf/tcpdf.php');
         }
