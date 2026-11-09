@@ -39,6 +39,10 @@
         }
     },
     "scripts": {
+        "pdf-fonts": [
+            "@php vendor/tecnickcom/tc-lib-pdf-font/util/build_fonts.php",
+            "@php vendor/tecnickcom/tc-lib-pdf-font/util/convert.php --outpath=vendor/tecnickcom/tc-lib-pdf-font/target/fonts/ --type=TrueTypeUnicode --encoding_id=10 --fonts=public/fonts/Naganoshi.ttf"
+        ],
         "setup": [
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
